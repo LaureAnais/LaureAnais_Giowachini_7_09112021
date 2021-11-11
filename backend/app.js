@@ -2,17 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+const {sequelize} = require('./models')
+const config = require('./config/config')
 
-const path = require('path');
-const usersRoutes = require('./routes/users');
-const helmet = require('helmet');
 
 const app = express();
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 app.use(bodyParser.json);
 app.use(cors());
-
-app.use(helmet());
 
 
 app.use((req, res, next) => {
@@ -28,6 +25,10 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use('/api/users', usersRoutes);
+require('./routes')(app)
 
-module.exports = app;
+sequelize.sync()
+.then(() => {
+    app.listen(config.port)
+    console.log(`Server started on port ${config.port}`)
+})

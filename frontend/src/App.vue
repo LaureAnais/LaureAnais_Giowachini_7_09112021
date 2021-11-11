@@ -1,17 +1,9 @@
 <script>
-//NavBar
+// import PageHeader from '@/components/Header.vue'
 export default {
-  name: 'App',
+  name: 'app',
   components: {
-    navBar
-  },
-  data() {
-    return {
-    }
+    PageHeader
   }
 }
 </script>
-
-<style>
-#app {}
-</style>

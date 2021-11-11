@@ -20,6 +20,8 @@
         v-model='password'
         placeholder="password"/>
         <br>
+        <div class="error" v-html="error"/>
+        <br>
         <button
         @click="Signup">
             S'inscrire
@@ -29,19 +31,34 @@
 </template>
 
 <script>
-import AuthenticationService from "../services/AuthentificationService";
+import AuthenticationService from "@/services/AuthentificationService"
 
 export default {
-    async signup() {
-    const response = await AuthenticationService.signup ({
-            email: this.email,
-            pseudo: this.pseudo,
-            password: this.password
-        })
+    data() {
+        return {
+            email: '',
+            pseudo: '',
+            password: ''
+        }
+    },
+    methods: {
+        async signup () {
+            try {
+                await AuthenticationService.signup({
+                    email: this.email,
+                    pseudo: this.pseudo,
+                    password: this.password
+                })
+            } catch (error) {
+                this.error = error.response.data.error
+            }
+        }
     }
-    
-    }
+}
 
 </script>
-<style>
+<style scoped>
+.error {
+    color: red;
+}
 </style>
