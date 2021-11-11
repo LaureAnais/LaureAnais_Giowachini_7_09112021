@@ -39,4 +39,4 @@ exports.findOne = (req, res) => {
 // Delete a post with the specified id in the request // only Admin
 exports.delete = (req, res) => {
   
-};
+}; 
