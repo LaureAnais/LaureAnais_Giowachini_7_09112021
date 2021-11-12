@@ -7,7 +7,8 @@ export default {
     }
 };
 
-//AuthenticationService.Signup({
-//    email: 'testing@gmail.com',
-//    password: '123456'
-//});
+/*
+AuthenticationService.Signup({
+   email: 'testing@gmail.com',
+    password: '123456'
+}); */

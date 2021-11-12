@@ -1,11 +1,11 @@
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
+//const dotenv = require('dotenv').config();
 
 exports.signup = (req, res, next) => {
-  const user = new User({
-    email: '',
-    password: '',
-  });
-  console.log(res.status(200).json({ message: "signup" }))  
-}
+ console.log('pleaseeeee')
+};
   

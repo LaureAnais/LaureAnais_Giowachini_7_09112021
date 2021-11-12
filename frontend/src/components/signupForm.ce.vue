@@ -23,7 +23,7 @@
         <div class="error" v-html="error"/>
         <br>
         <button
-        @click="Signup">
+        @click="signup">
             S'inscrire
         </button>
        
