@@ -1,5 +1,5 @@
 // Joi framework use to validate things in Express
-const Joi = require('joi');
+/*const Joi = require('joi');
 
 module.exports = {
     signup (req, res, next) {
@@ -41,4 +41,4 @@ module.exports = {
             next()
         }
     }
-};
+};*/
