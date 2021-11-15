@@ -1,4 +1,5 @@
 <script>
+//modifier avec signup form
 import loginForm from '../components/signupForm.ce.vue'
 export default {
     name: "Home",

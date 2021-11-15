@@ -42,19 +42,19 @@ export default {
         }
     },
     methods: {
-        async signup () {
-            try {
-                await AuthenticationService.signup({
-                    email: this.email,
-                    pseudo: this.pseudo,
-                    password: this.password
-                })
-            } catch (error) {
-                this.error = error.response.data.error
+      //  async signup () {
+        //    try {
+          //      await AuthenticationService.signup({
+            //        email: this.email,
+              //      pseudo: this.pseudo,
+                //    password: this.password
+                //})
+           // } catch (error) {
+             //   this.error = error.response.data.error
             }
         }
-    }
-}
+  //  }
+//}
 
 </script>
 <style scoped>

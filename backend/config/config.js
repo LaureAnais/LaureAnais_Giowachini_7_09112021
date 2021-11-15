@@ -1,5 +1,5 @@
 module.exports = {
-    port: process.env.PORT || 8081, 
+    port: process.env.PORT || 3001, 
     db: {
         database: process.env.DB_NAME || 'groupomania' ,
         user: process.env.DB_USER || 'root' ,
