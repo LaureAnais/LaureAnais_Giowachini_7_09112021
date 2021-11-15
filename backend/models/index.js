@@ -1,4 +1,4 @@
-/*const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const config = require('../config/config');
@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
     config.db.options
 )
 
-/*fs
+fs
     .readdirSync(__dirname)
     .filter((file) =>
         file !== 'index.js'
@@ -25,4 +25,4 @@ const sequelize = new Sequelize(
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-module.exports = db */
+module.exports = db 
