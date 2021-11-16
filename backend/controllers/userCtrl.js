@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-//const db = require('../models/index.model');
+const db = require('../models');
 const fs = require('fs');
+const schemaSignup = require('../schema/signupSchema');
 
 const Joi = require('joi');
 
-module.exports = {
-    signup (req, res, next) {
+exports.signup = (req, res, next) =>{
         const schema = {
             email: Joi.string().email(),
             pseudo: Joi.string().regex(
@@ -44,5 +44,4 @@ module.exports = {
         }else{
             next()
         }
-    }
-};
+    };

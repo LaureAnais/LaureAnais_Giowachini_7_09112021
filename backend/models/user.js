@@ -1,14 +1,32 @@
 module.exports = (sequelize, DataTypes) =>
-sequelize.define('User', {
+sequelize.define('users', {
+  id:{
+    autoIncrement: true, 
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true
+  },
   email: {
     type: DataTypes.STRING,
-    unique: true
+    allowNull: false,
+    unique: "email_unique"
   },
   pseudo: {
-    type: DataTypes.STRING,
-    unique: true
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: "pseudo_unique"
   },
   password: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  profile_picture: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  }, 
+  id_roles: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 });
