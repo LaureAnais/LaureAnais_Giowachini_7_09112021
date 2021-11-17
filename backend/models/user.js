@@ -22,7 +22,7 @@ sequelize.define('users', {
   },
   profile_picture: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   }, 
   id_roles: {
     type: DataTypes.INTEGER,
