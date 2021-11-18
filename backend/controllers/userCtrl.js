@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const db = require('../models');
 const fs = require('fs');
 const schemaSignup = require('../schema/signupSchema');
+const User = require('../models/User');
+// const schemaLogin = require('../schema/loginSchema');
 
 exports.signup = async (req, res, next) => {
     try {
@@ -11,6 +13,9 @@ exports.signup = async (req, res, next) => {
             pseudo: req.body.pseudo,
             password: req.body.password
         }
+        // if(user.findOne({email: req.query.email} {
+         //   return res.status(400).json({message: 'Compte déjà existant, merci de vous connecter. '});
+      //  }
         const verifySchema = await schemaSignup.validateAsync(user)
         if (!verifySchema){
             return res.status(400).json({message: 'Information erronnée, merci de vérifier. '});
@@ -23,3 +28,34 @@ exports.signup = async (req, res, next) => {
      }
         
 };
+
+
+// Mettre logique login dans schema login 
+
+exports.login = (req, res, next) => {
+    User.findOne({email: req.body.email})
+    .then(user => {
+        if (!user) {
+            return res.status(401).json({error: 'Utilisateur non trouvé!'});
+        }
+        bcrypt.compare(req.body.password, user.password)
+            .then(valid => {
+                if(!valid) {
+                    return res.status(401).json({error: 'Mot de passe incorrect!'});
+                }
+                res.status(200).json({
+                    userId: user.id,
+                    //admin
+                    token: 'jwt.sign'(
+                        {userId: user.id},
+                        process.env.TOKEN_KEY,
+                        { expiresIn: '24h'}
+                    )
+                });
+            })
+            .catch (error => {res.status(500).json({error})})
+    })
+    .catch (error => {res.status(500).json({error})})
+}; 
+
+
