@@ -23,4 +23,8 @@ db.posts = require ("./Post")(sequelize, Sequelize)
 db.comments = require ("./Comment")(sequelize, Sequelize)
 db.likes = require ("./Like")(sequelize, Sequelize)
 db.roles = require ("./Roles")(sequelize, Sequelize)
+
+db.users.hasMany(db.posts, {as: "fk_users_posts"})
+db.posts.belongsTo(db.users, {as: "fk_users_posts"})
+
 module.exports = db 
