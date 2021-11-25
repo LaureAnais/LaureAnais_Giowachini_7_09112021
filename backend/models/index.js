@@ -26,8 +26,18 @@ db.comments = require ("./Comment")(sequelize, Sequelize)
 db.likes = require ("./Like")(sequelize, Sequelize)
 db.roles = require ("./Roles")(sequelize, Sequelize)
 
-db.users.hasMany(db.posts, {as: "fk_users_posts"})
-db.posts.belongsTo(db.users, {as: "fk_users_posts"})
+db.users.hasMany(db.posts, 
+  {as: "fk_users_posts"}, 
+  {onDelete: 'Cascade'}, 
+  {onUpdate: 'Cascade'}
+)
+db.posts.belongsTo(db.users, 
+  {as: "fk_users_posts"},
+  {onDelete: 'Cascade'}, 
+  {onUpdate: 'Cascade'}
+)
+
+
 
 // ajouter constraints: false à ma contraintes ou ok contraintes en cascade??
 

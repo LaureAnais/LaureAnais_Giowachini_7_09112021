@@ -3,10 +3,8 @@ const jwt = require('jsonwebtoken');
 const db = require('../models');
 const fs = require('fs');
 
-
-const User = require('../models/User');
 const schemaSignup = require('../schema/signupSchema');
-// const schemaLogin = require('../schema/loginSchema');
+const schemaLogin = require('../schema/loginSchema');
 
 exports.signup = async (req, res, next) => {   
     try {
@@ -38,73 +36,103 @@ exports.signup = async (req, res, next) => {
         .then(user => {return res.status(201).json({user})})
         .catch(err => {return res.status(500).json({err})})
      } catch(err) {
-        return res.status(500).json({message: err.message});
+        return res.status(500).json({err});
      }
         
 };
 
- // Mettre logique login dans schema login 
-
- exports.login = (req, res, next) => {
-    db.User.findOne({email: req.body.email})
-    .then(user => {
-        if (!user) {
-            return res.status(401).json({error: 'Utilisateur non trouvé!'});
+ exports.login =  async (req, res, next) => {
+    try {
+        const user = {
+            email: String(req.body.email),
+            password: String(req.body.password)
         }
-        bcrypt.compare(req.body.password, user.password)
+        const verifySchema = await schemaLogin.validateAsync(user)
+        if (!verifySchema){
+            return res.status(400).json({message: 'Information erronnée, merci de vérifier. '});
+        }
+        const userDB = await db.users.findOne({
+            where:{email:user.email}
+        })
+        if (!userDB ){
+            return res.status(400).json({message: 'Information erronnée, merci de vérifier. '});
+        }
+        bcrypt.compare(user.password, userDB.password)
             .then(valid => {
                 if(!valid) {
                     return res.status(401).json({error: 'Les informations renseignées ne sont pas correctes!'});
                 }
                 res.status(200).json({
-                    userId: user.id,
+                    userId: userDB.id,
                     //admin
-                    token: 'jwt.sign'(
+                    token: jwt.sign (
                         {
-                            userId: user.id
+                            userId: userDB.id
                         },
-                        process.env.TOKEN_KEY,
+                            process.env.TOKEN_KEY,
                         { 
-                            expiresIn: '14h'
+                            expiresIn: '24h'
                         }
                     )
                 });
             })
-            .catch (error => {res.status(500).json({error})})
-    })
-    .catch (error => {res.status(500).json({error})})
+            .catch (err => {res.status(500).json({err})})
+    }  catch(err) {
+        return res.status(500).json({err});
+     } 
 };
 
 exports.getOneUser = (req, res, next) => {
-    db.User.findOne(
+    db.users.findOne(
         {attributes: 
-        ['id', 'email', 'pseudo', 'profile_picture', 'id_roles', 'createdAt', 'updateAt'],
+            {exclude: ['password']},
         where: {
         id: req.params.id
     }})
     .then(user => res.status(200).json({user}))
-    .catch(error => res.status(404).json({error}))
+    .catch(error => res.status(400).json({error}))
 }
     
 
 exports.getAllUsers = (req, res, next) => {
-    db.User.findAll(
+    db.users.findAll(
         {attributes: 
-        ['id', 'email', 'pseudo', 'profile_picture', 'id_roles', 'createdAt', 'updateAt'],
+            {exclude: ['password']}
     })
     .then(user => res.status(200).json({user}))
-    .catch(error => res.status(404).json({error}))
+    .catch(error => res.status(400).json({error}))
 };
 
-exports.updateProfile = (req, res, next) => {
-    const UserObject = req.file ?
-    {
-        ...JSON.parse(req.body.user),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-      } : { ...req.body };
-    user.updateOne({ _id: req.params.id }, { ...UserObject, _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Compte utilisateur modifié !'}))
-      .catch(error => res.status(400).json({ error }));
+exports.updateProfile = async (req, res, next) => { 
+    try {
+    const user = {}
+    if (req.body.pseudo) {
+        user.pseudo = String (req.body.pseudo)
+        // Vérifier info du front en utilisatn Joi
+        // Attention : nouveau pseudo doit etre ok avec schema joi 
+    }
+    if (req.file) {
+        user.profile_picture = String (req.body.profile_picture)
+        // Vérifier s'il y a une image 
+        // Si oui la supprimer
+        // puis enregistrer nouvelle image 
+    }
+     db.users.findOne({
+        where: {
+        id: req.params.id
+    }})
+    // Enlever le .then et remettre le await 
+    .then((userDB) => {
+       return userDB.update({...user})
+    })
+    .then(user => {return res.status(201).json({user})})
+    .catch(err => {return res.status(500).json({err: err.message})})
+    
+     //   imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      
+} catch(err) {
+    return res.status(500).json({err});
+ } 
 };
 
 // Supprimer un profil =
