@@ -9,10 +9,16 @@ sequelize.define('likes', {
   id_users:{
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: 'users', key: 'id'
+    }
   },
   id_posts:{
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: 'posts', key: 'id'
+    }
   },
   likes: {
     type: DataTypes.INTEGER,

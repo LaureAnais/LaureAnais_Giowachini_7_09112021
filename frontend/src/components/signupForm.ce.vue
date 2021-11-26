@@ -1,39 +1,59 @@
 <template>
-    <div>
-        <h1>Bienvenue sur le chat Groupomania, merci de vous inscrire </h1>
+<b-container>
+    <b-row class="justify-content-md-center mt-4">
+        <b-col col md="8">
+            <b-card 
+            header="Groupomania app"
+            header-bg-variant="primary"
+            header-text-variant="white"
+            > 
+            </b-card>
+            <b-card-text>
+                <b-form @submit="onSubmit">
+                    <b-form-group
+                    description="Enter your email"
+                    label="email"
+                    >
+                 <b-form-input v-model="email" required></b-form-input>   
+                    </b-form-group>
+                </b-form>
+            </b-card-text>
 
-        <input 
-        type="email"
-        name="email"
-        v-model='email'
-        placeholder="email"/>
-        <br>
-        <input 
-        type="pseudo"
-        name="pseudo"
-        v-model='pseudo'
-        placeholder="pseudo"/>
-        <br>
-        <input 
-        type="password"
-        name="password"
-        v-model='password'
-        placeholder="password"/>
-        <br>
-        <div class="error" v-html="error"/>
-        <br>
-        <button
-        @click="signup">
-            S'inscrire
-        </button>
-       
-    </div>
+            <b-card-text>
+                <b-form @submit="onSubmit">
+                    <b-form-group
+                    description="Enter your pseudo"
+                    label="pseudo"
+                    >
+                 <b-form-input v-model="pseudo" type="pseudo" required></b-form-input>   
+                    </b-form-group>
+                </b-form>
+            </b-card-text>
+
+            <b-card-text>
+                <b-form @submit="onSubmit">
+                    <b-form-group
+                    description="Enter your password"
+                    label="password"
+                    >
+                 <b-form-input v-model="password" type="password" required></b-form-input>   
+                    </b-form-group>
+
+                    <b-form-group>
+                      <b-button type="submit" variant="outline-primary" : disabled="acceptableSubmittion">S'inscrire</b-button>
+                    </b-form-group>
+                </b-form>
+            </b-card-text>
+        </b-col>
+    </b-row>
+</b-container>
 </template>
 
 <script>
-import AuthenticationService from "@/services/AuthentificationService"
+// import axios from "axios";
 
 export default {
+    name: 'signup' ,
     data() {
         return {
             email: '',
@@ -42,19 +62,17 @@ export default {
         }
     },
     methods: {
-      //  async signup () {
-        //    try {
-          //      await AuthenticationService.signup({
-            //        email: this.email,
-              //      pseudo: this.pseudo,
-                //    password: this.password
-                //})
-           // } catch (error) {
-             //   this.error = error.response.data.error
-            }
-        }
-  //  }
-//}
+      onsubmit(event) {
+        event.preventDefault()
+        alert(this.email + ' ' + this.pseudo + ' ' + this.password)
+      }
+    }, 
+    computed: {
+      acceptableSubmittion() {
+        return this.email.length > 0 && this.pseudo.length > 0 && this.password.length > 0 ? false : true
+      }
+    }
+}
 
 </script>
 <style scoped>
@@ -62,3 +80,4 @@ export default {
     color: red;
 }
 </style>
+
