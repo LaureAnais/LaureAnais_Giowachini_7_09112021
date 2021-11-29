@@ -20,7 +20,7 @@
 </template>
 
 <script>
- export defaut {
+ export default {
      name: 'Login'
  }
 </script>

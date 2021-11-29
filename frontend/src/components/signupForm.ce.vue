@@ -1,4 +1,5 @@
 <template>
+
 <b-container>
     <b-row class="justify-content-md-center mt-4">
         <b-col col md="8">
@@ -46,7 +47,7 @@
             </b-card-text>
         </b-col>
     </b-row>
-</b-container>
+</b-container> 
 </template>
 
 <script>
