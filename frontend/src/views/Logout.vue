@@ -1,0 +1,1 @@
+// Se déconnecter - sortir du localStorage

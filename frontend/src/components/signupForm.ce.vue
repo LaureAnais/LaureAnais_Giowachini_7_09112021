@@ -10,7 +10,7 @@
             > 
             </b-card>
             <b-card-text>
-                <b-form @submit="onSubmit">
+                <b-form @submit="onSubmit"> 
                     <b-form-group
                     description="Enter your email"
                     label="email"
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+//import axios from "axios";
 
 export default {
     name: 'signup' ,

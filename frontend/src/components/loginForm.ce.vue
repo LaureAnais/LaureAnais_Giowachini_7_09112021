@@ -1,6 +1,6 @@
 <template>
     <form >
-<h3>Se connecter</h3>
+    <h3>Se connecter</h3>
 
     <div class="form-group">
         <label>Email</label>
