@@ -1,5 +1,11 @@
 <template>
+<div>
     <h2>Inscription</h2>
+     <div>
+         <router-link to="/">Retour</router-link>
+     </div>
+</div>
+    
 </template>
 
 <script setup>

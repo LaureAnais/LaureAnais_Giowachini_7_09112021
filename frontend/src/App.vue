@@ -12,12 +12,20 @@
 </template>
 
 <script>
-    import Nav from './components/nav.vue'
+    import NavBar from './components/navBar.ce.vue'
+
     export default {
         name: 'App',
         components: {
-            Nav
+            NavBar
+        },
+
+        data() {
+            return {
+                
+            }
         }
+
     
     }
 </script>
