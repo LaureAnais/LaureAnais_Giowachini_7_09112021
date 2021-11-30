@@ -1,12 +1,19 @@
 <template>
-    <div>page ou je peux m'enregistrer + m'inscrire 
-// page qui ira chercher les componentes de s'inscire / se loguer</div> 
+    <div>
+    <h2>Bienvenu chez Groupomania</h2>
+    <p>Merci de vous inscrire</p> 
+    <Signup></Signup> 
+    </div> 
 </template>
 
 <script>
 import axios from "axios" 
+import signupForm from "../components/Auth/SignupForm.vue"
 export default {  
-    name: Registered,
+    name: 'Registered',
+    components: {
+        Signup: signupForm
+    },
     data() {
         return { 
             email: "",

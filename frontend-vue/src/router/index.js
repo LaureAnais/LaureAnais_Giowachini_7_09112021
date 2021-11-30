@@ -9,7 +9,7 @@ const routes = [
     pageTitle: "Page d'accueil",
     requiresAuth: true
     }
-},
+ },
 // {
 //     path: '/signup', 
 //     name: "Signup",
@@ -25,11 +25,15 @@ const routes = [
 //     name: "Profile",
 //     component: Profile
 // },
-// {
-//     path: '/Registered', 
-//     name: "Registered",
-//     component: Registered
-// },
+  {
+     path: '/Registered', 
+     name: "Registered",
+     component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
+     meta: {
+     pageTitle: "Page de connexion",
+     requiresAuth: true
+     }
+  },
 // {
 //     path: '/Admin', 
 //     name: "Admin",

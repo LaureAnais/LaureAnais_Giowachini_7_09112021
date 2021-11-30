@@ -1,10 +1,17 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <NavBar></NavBar>
   </div>
-  <router-view />
+  <!-- <router-view> -->
 </template>
+
+<script>
+import NavBar from "../src/components/Header.vue"
+
+export default {
+  components: {NavBar}
+}
+</script>
 
 <style>
 #app {
