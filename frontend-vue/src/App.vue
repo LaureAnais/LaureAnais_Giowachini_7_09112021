@@ -1,21 +1,39 @@
 <template>
   <div id="nav">
-    <NavBar></NavBar>
-  </div>
+    <Header></Header>
+    <Footer></Footer>
+    
+    <img alt="Groupomania logo" src="./assets/icon-above-font.png" />
+    </div>
+    
+ 
   <!-- <router-view> -->
 </template>
 
 <script>
-import NavBar from "../src/components/Header.vue"
+import Header from "../src/components/Header.vue"
+import Footer from "../src/components/Footer.vue"
 
 export default {
-  components: {NavBar}
+  components: {
+    Header, 
+    Footer
+  },
+
+  data() {
+    return {
+
+    }
+  }
 }
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+
+ #app {
+  /* telecharger typo  */
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -26,6 +44,10 @@ export default {
   padding: 30px;
 }
 
+#nav li {
+  list-style-type: none;
+}
+
 #nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -33,5 +55,13 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+} 
+
+#container {
+  color: red
+}
+
+#footer {
+  color : blue
 }
 </style>

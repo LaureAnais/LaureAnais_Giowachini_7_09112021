@@ -8,11 +8,12 @@
 
 <script>
 import axios from "axios" 
-import signupForm from "../components/Auth/SignupForm.vue"
+import Signup from "../components/Auth/SignupForm.vue"
+
 export default {  
     name: 'Registered',
     components: {
-        Signup: signupForm
+        Signup
     },
     data() {
         return { 
