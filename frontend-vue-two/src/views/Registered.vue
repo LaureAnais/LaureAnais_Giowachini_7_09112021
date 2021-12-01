@@ -1,21 +1,14 @@
 <template>
-    <div>
-    <h2>Bienvenu chez Groupomania</h2>
-    <p>Merci de vous inscrire</p> 
-    <SignupForm></SignupForm> 
-    </div> 
+    
 </template>
 
 <script>
-import axios from "axios" 
-import SignupForm from "../components/Auth/SignupForm.vue"
-
-export default {  
-    name: 'Registered',
+import axios from "axios"
+export default {
+    name:"Registered",
     components: {
-        SignupForm
     },
-    data() {
+     data() {
         return { 
             email: "",
             pseudo: "",
