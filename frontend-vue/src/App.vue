@@ -1,13 +1,14 @@
 <template>
   <div id="nav">
     <Header></Header>
+    <router-view :key="$route.path" />
     <Footer></Footer>
     
-    <img alt="Groupomania logo" src="./assets/icon-above-font.png" />
+    
     </div>
     
  
-  <!-- <router-view> -->
+  
 </template>
 
 <script>

@@ -2,18 +2,18 @@
     <div>
     <h2>Bienvenu chez Groupomania</h2>
     <p>Merci de vous inscrire</p> 
-    <Signup></Signup> 
+    <SignupForm></SignupForm> 
     </div> 
 </template>
 
 <script>
 import axios from "axios" 
-import Signup from "../components/Auth/SignupForm.vue"
+import SignupForm from "../components/Auth/SignupForm.vue"
 
 export default {  
     name: 'Registered',
     components: {
-        Signup
+        SignupForm
     },
     data() {
         return { 

@@ -1,6 +1,7 @@
 <template>
         <nav class = "navbar navbar-expand navbar-light fixed-top">
         <div class="container">
+            <img alt="Groupomania logo" src="../assets/icon-above-font.png" />
              <a href="#" class="navbar-brand">Home</a>
              <div class="collapse navbar-collapse">
                  <ul class="navbar-nav ml-auto">
