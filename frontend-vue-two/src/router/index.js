@@ -12,31 +12,37 @@ const routes = [
     pageTitle: "Page d'accueil",
     requiresAuth: true
     }
+  },
+  {
+    path: '/Registered', 
+    name: "Registered",
+    component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
+    meta: {
+    pageTitle: "Page de connexion",
+    requiresAuth: true
+    }
  },
-// {
-//     path: '/signup', 
-//     name: "Signup",
-//     component: Signup
+  {
+      path: '/login', 
+      name: "Login",
+      component: () => import(/* webpackChunkName: "Inscription" */ '../views/Login.vue'),
+      meta: {
+      pageTitle: "Page de connexion",
+      requiresAuth: true
+    } 
+  },
+  // {
+//     path: '/Profile',
+//     name: "Profile",
+//     component: Profile
 // },
 // {
 //     path: '/logout', 
 //     name: "logout",
 //     component: Logout
 // },
-// {
-//     path: '/Profile',
-//     name: "Profile",
-//     component: Profile
-// },
-  {
-     path: '/Registered', 
-     name: "Registered",
-     component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
-     meta: {
-     pageTitle: "Page de connexion",
-     requiresAuth: true
-     }
-  },
+
+  
 // {
 //     path: '/Admin', 
 //     name: "Admin",
