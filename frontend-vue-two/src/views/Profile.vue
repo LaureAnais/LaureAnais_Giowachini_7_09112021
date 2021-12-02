@@ -11,8 +11,8 @@
 
 <script>
 import NavBar from '../components/Header.vue'
-import Profile from '../components/Profile/ProfileGetOne.vue'
-import ProfilePicture from '../components/Profile/ProfilePicture.vue'
+import Profile from '../components/Home/ProfileGetOne-G.vue'
+import ProfilePicture from '../components/Home/ProfilePicture-G.vue'
 
 
 export default {

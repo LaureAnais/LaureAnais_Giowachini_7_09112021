@@ -1,12 +1,14 @@
 <template>
-    
+    <Signup></Signup>
 </template>
 
 <script>
 import axios from "axios"
+import Signup from "../components/Auth/Signup.vue"
 export default {
     name:"Registered",
     components: {
+        Signup
     },
      data() {
         return { 

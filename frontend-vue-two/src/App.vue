@@ -1,14 +1,11 @@
 <template>
+<v-app>
   <div id="nav">
     <Header></Header>
-    <router-view :key="$route.path" />
+    <v-main><router-view/></v-main>
     <Footer></Footer>
-    
-    
     </div>
-    
- 
-  
+</v-app>
 </template>
 
 <script>
@@ -16,15 +13,13 @@ import Header from "../src/components/Header.vue"
 import Footer from "../src/components/Footer.vue"
 
 export default {
+  name: "App",
   components: {
     Header, 
     Footer
   },
 
-  data() {
-    return {
-
-    }
+  data:() => {
   }
 }
 
