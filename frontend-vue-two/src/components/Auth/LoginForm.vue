@@ -2,7 +2,7 @@
   <v-form
     ref="form"
     v-model="valid"
-    lazy-validation
+    @submit.prevent="onSubmitLogin" id="check-login-form"
   >
     <v-text-field
       v-model="email"
@@ -47,6 +47,34 @@
 
 <script>
 export default {
-    name: "Login"
+    name: "LoginForm" ,
+    data() {
+      return {
+      // valid: false,
+        email: "",
+        emailRules: [
+        v => !!v || "Merci de renseigner votre email",
+        ],
+        pseudo: "",
+        nameRules: [
+            v => !!v || 'Merci de renseigner votre pseudo',
+        ],
+        password: "",
+        passwordRules: [
+        v => !!v || "Merci de renseigner votre mot de passe",
+        ],
+    
+      }
+    },
+    computed:  {form() { return this.$refs.form }
+    },
+    methods: {
+      onSubmitLogin() {
+        if (this.form.validate()) {
+
+        this.$emit('submit');
+      }
+      }
+    }
 }
 </script>

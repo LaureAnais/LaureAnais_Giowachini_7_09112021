@@ -14,20 +14,7 @@ export default {
     },
      data() {
         return { 
-            // valid: false,
-            email: "",
-            emailRules: [
-            v => !!v || "Merci de renseigner votre email",
-            ],
-            pseudo: "",
-            nameRules: [
-                v => !!v || 'Merci de renseigner votre pseudo',
-            ],
-            password: "",
-            passwordRules: [
-            v => !!v || "Merci de renseigner votre mot de passe",
-            ],
-    
+           
         }
     },
     methods: {
