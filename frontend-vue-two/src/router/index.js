@@ -32,10 +32,14 @@ const routes = [
     } 
   },
   // {
-//     path: '/Profile',
-//     name: "Profile",
-//     component: Profile
-// },
+  //   path: '/Profile',
+  //   name: "Profile",
+  //   component: () => import(/* webpackChunkName: "Inscription" */ '../views/Profile.vue'),
+  //   meta: {
+  //   pageTitle: "Votre profil",
+  //   requiresAuth: true
+  //   } 
+  // },
 // {
 //     path: '/logout', 
 //     name: "logout",

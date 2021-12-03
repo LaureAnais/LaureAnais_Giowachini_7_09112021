@@ -4,7 +4,9 @@
 
 <script>
 import axios from "axios"
+
 import LoginForm from "../components/Auth/LoginForm.vue"
+
 export default {
     name:"Login",
     components: {
@@ -30,14 +32,22 @@ export default {
     },
     methods: {
         onSubmitLogin: function() {
+            const userlogin = {
+                email: this.email,
+                pseudo: this.pseudo,
+                password: this.password
+            }
             axios
-                .post ("http://localhost:3000/api/users/login", {
-                    // email: ,
-                    // pseudo: ,
-                    // password: ,
-                })
-                .then (response => {console.log(response)})
-                .catch (err => {console.log(err)})
+                .post ("http://localhost:3000/api/users/login", userlogin)
+                .then(res => {
+                    // JSON Stringify nécessaire ou res.data.token ??
+                    localStorage.setItem('token', JSON.stringify(res.data))
+                    localStorage.setItem('userId', res.data.userId)
+                    this.$router.push()
+                    })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid">
+  <v-form v-model="valid" @submit.prevent="onSubmitSignup" id="check-signup-form">
     <v-container>
       <v-row>
         <v-col
@@ -9,7 +9,7 @@
           <v-text-field
             v-model="pseudo"
             :rules="nameRules"
-            :counter="10"
+            :counter="20"
             label="Pseudo"
             required
           ></v-text-field>
@@ -37,6 +37,16 @@
             label="Password"
             required
           ></v-text-field>
+
+          <v-btn
+            :disabled="valid"
+            color="success"
+            class="mr-4"
+            @submit="onSubmitSignup"
+          >
+            Valider
+          </v-btn>
+
         </v-col>
       </v-row>
     </v-container>
@@ -44,6 +54,6 @@
 </template>
 <script>
 export default {
-    name: "Signup"
+    name: "SignupForm"
 }
 </script>
