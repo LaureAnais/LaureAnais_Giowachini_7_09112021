@@ -95,6 +95,7 @@ exports.getOneUser = (req, res, next) => {
     
 
 exports.getAllUsers = (req, res, next) => {
+    console.log(req.user)
     db.users.findAll(
         {attributes: 
             {exclude: ['password']}
@@ -135,20 +136,17 @@ exports.updateProfile = async (req, res, next) => {
  } 
 };
 
-// Supprimer un profil =
-// 1. Trouver le bon profil à supprimer
-// 2. Vérifier qui fait la demande de suppression : l'utilisateur lui même ou l'administrateur 
-// 3. Si droit ok = supprimer l'ensemble des éléments du compte 
 exports.deleteProfile = (req, res, next) => {
-    db.User.findOne({ where: { id: req.params.id }})
+    db.users.findOne({ where: { id: req.params.id }})
     .then(user => {
-      // if(user.id !== ()) {
-      //  return res.status(401).json({error: 'Vous ne pouvez pas réaliser cette opération'});
-      // }
-            user.deleteOne({ _id: req.params.id })
-              .then(() => res.status(200).json({ message: 'Compte utilisateur supprimé !'}))
-              .catch(error => res.status(401).json({ message: 'Vous ne bénéficiez pas des droits permettant la suppression de ce compte!' }));
+      if(user.id !== req.user.userId) {
+          // req.user.role = quand je voudrais savoir par rapport à admin ou non
+       return res.status(401).json({error: 'Vous ne pouvez pas réaliser cette opération'});
+      }
+           return user.destroy()
           })
+          .then(() => res.status(200).json({ message: 'Compte utilisateur supprimé !'}))
+          .catch(error => res.status(401).json({ message: 'Vous ne bénéficiez pas des droits permettant la suppression de ce compte!' }))
     
     .catch(error => res.status(500).json({ error }));
 };

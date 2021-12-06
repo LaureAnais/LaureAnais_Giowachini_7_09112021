@@ -13,7 +13,9 @@ export default {
     },
      data() {
         return { 
-        
+        //  pseudo: "",
+        //  email: "",
+        //  password: "",
         }
     },
     methods: {
@@ -33,7 +35,7 @@ export default {
                     }
                 }
                 )
-                 .then(() => { this.$router.push('/registered')})
+                .then(() => { this.$router.push('/registered')})
                 .catch(() => {this.errorAlert = true})
         }
     }
