@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const schemaSignup = require('../schema/signupSchema');
 const schemaLogin = require('../schema/loginSchema');
+const schemaModifyProfile = require('../schema/modifyProfileSchema');
 
 exports.signup = async (req, res, next) => {   
     try {
@@ -104,33 +105,47 @@ exports.getAllUsers = (req, res, next) => {
     .catch(error => res.status(400).json({error}))
 };
 
+
+// 1- Vérification des données reçus du front 
+// 2- Traitement des données
+// 3- Echange avec la base de données
+// 4- Message de retour de l'application ( backend) au front
+
 exports.updateProfile = async (req, res, next) => { 
     try {
     const user = {}
     if (req.body.pseudo) {
         user.pseudo = String (req.body.pseudo)
-        // Vérifier info du front en utilisatn Joi
-        // Attention : nouveau pseudo doit etre ok avec schema joi 
-    }
+        const verifySchema = await schemaModifyProfile.validateAsync(user)
+        if (!verifySchema){
+            return res.status(400).json({message: 'Information erronnée, merci de vérifier. '});
+        }
+    } 
     if (req.file) {
-        user.profile_picture = String (req.body.profile_picture)
-        // Vérifier s'il y a une image 
-        // Si oui la supprimer
-        // puis enregistrer nouvelle image 
+        // je donne uniquement un nom à l'image = req.file.filename 
+        // j'envoie uniquement ce nom dans la base de donnée pas l'image elle meme
+        user.profile_picture =`${req.protocol}://${req.get("host")}/images/${
+            req.file.filename}` 
     }
-     db.users.findOne({
+    const userDB = await db.users.findOne({
         where: {
         id: req.params.id
     }})
-    // Enlever le .then et remettre le await 
-    .then((userDB) => {
-       return userDB.update({...user})
-    })
+        if (!userDB) {
+            return res.status(403).json({message: "Vous n'avez pas les droits suffisants pour cette action."})
+        } 
+        // On recupère le nom de l'image dans la base de données / puis on pourra supprimer l'image
+        const fileName = userDB.profile_picture.split("/images/")[1];    
+        fs.unlink(`app/images/${fileName}`, (err) => {
+            // Ternaire 
+             err ? console.log(err) : console.log("image supprimée !")
+              })
+        // update dans la base de données
+        userDB.update({...user})
+    
     .then(user => {return res.status(201).json({user})})
     .catch(err => {return res.status(500).json({err: err.message})})
     
-     //   imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-      
 } catch(err) {
     return res.status(500).json({err});
  } 
