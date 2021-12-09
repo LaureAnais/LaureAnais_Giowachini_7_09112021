@@ -1,13 +1,12 @@
 const { users } = require('../models');
 const db = require('../models');
 
-// Possibilité d'ajouter une image à un post
-exports.post = (req, res, next) => {
+exports.createPost = (req, res, next) => {
     db.posts.create({
-        //userId ou author
-        author: req.body.id_author,
+        user_id: req.body.user_id,
         message: req.body.message,
-        picture_uploaded: req.body.picture_uploaded
+        picture_uploaded: `${req.protocol}://${req.get("host")}/images/${
+            req.file.filename}` 
     })
     .then(() => res.status(201).json({ message: 'post ajouté!'}))
     .catch(error => res.status(400).json({ error }))  
@@ -17,7 +16,8 @@ exports.post = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
     db.posts.findOne({where: { id: req.params.id }})
     .then(post => {
-        if(post.userId !== req.post.userId) {
+        // Vérifier que la personne qui a fait le post est bien le meme que celui qui est enregistré via le TOKEN
+        if(post.user_id !== req.user.userId) {
             return res.status(401).json({error: 'Vous ne pouvez pas réaliser cette opération'});
         }
         return post.destroy()
@@ -36,7 +36,10 @@ exports.deletePost = (req, res, next) => {
 
 // Penser à l'image dans le post
 exports.Updatepost = (req, res, next) => {
-
+// soit l'utilisateur veut modifier son texte 
+// Soit il veut supprimer la photo
+// Soit il veut ajouter une photo
+// Soit il veut changer / modifier la photo qu'il avait mis 
 };
 
 exports.getOnePost = (req, res, next) => {

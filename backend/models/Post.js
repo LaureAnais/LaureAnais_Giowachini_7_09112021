@@ -6,7 +6,7 @@ sequelize.define('posts', {
     allowNull: false,
     primaryKey: true
   },
-  id_author:{
+  user_id:{
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {

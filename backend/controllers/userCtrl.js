@@ -105,12 +105,6 @@ exports.getAllUsers = (req, res, next) => {
     .catch(error => res.status(400).json({error}))
 };
 
-
-// 1- Vérification des données reçus du front 
-// 2- Traitement des données
-// 3- Echange avec la base de données
-// 4- Message de retour de l'application ( backend) au front
-
 exports.updateProfile = async (req, res, next) => { 
     try {
     const user = {}
