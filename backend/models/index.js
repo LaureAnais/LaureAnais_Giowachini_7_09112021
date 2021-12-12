@@ -28,12 +28,14 @@ db.roles = require ("./Roles")(sequelize, Sequelize)
 
 // Foreign Key on posts' table link to id_users on user's table
 db.users.hasMany(db.posts, 
-  {as: "fk_users_posts"}, 
+  { foreignKey: "user_id", 
+    as: "fk_users_posts"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 db.posts.belongsTo(db.users, 
-  {as: "fk_users_posts"},
+  {foreignKey: "user_id", 
+   as: "fk_users_posts"},
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )

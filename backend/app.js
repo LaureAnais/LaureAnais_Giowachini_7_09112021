@@ -26,9 +26,13 @@ db.sequelize.sync();
 
 // Routes files
 const userRoutes = require('./routes/UserRoute');
+const postRoutes = require('./routes/PostRoute');
+const commentRoutes = require('./routes/CommentRoute');
 
 // Routes
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/comment", commentRoutes);
 
 // pour utiliser notre application express depuis notre serveur node
 module.exports = app;

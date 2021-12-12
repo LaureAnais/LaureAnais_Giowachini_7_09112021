@@ -38,7 +38,7 @@ exports.signup = async (req, res, next) => {
         .catch(err => {return res.status(500).json({err})})
      } catch(err) {
         return res.status(500).json({err});
-     }
+        }
         
 };
 
@@ -155,7 +155,5 @@ exports.deleteProfile = (req, res, next) => {
            return user.destroy()
           })
           .then(() => res.status(200).json({ message: 'Compte utilisateur supprimé !'}))
-          .catch(error => res.status(401).json({ message: 'Vous ne bénéficiez pas des droits permettant la suppression de ce compte!' }))
-    
-    .catch(error => res.status(500).json({ error }));
+          .catch(error => res.status(500).json({ error }))
 };
