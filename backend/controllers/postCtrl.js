@@ -1,5 +1,7 @@
 const db = require("../models");
-const schemaPost = require("../schema/createPostSchema");
+const fs = require('fs');
+
+const schemaPost = require("../schema/postSchema");
 
 exports.createPost = async (req, res, next) => {
   try {
@@ -60,17 +62,56 @@ exports.deletePost = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-// 1- Vérification des données reçus du front
-// 2- Traitement des données
-// 3- Echange avec la base de données
-// 4- Message de retour de l'application ( backend) au front
+exports.Updatepost = async (req, res, next) => {
+    try  {
+   
+  // Traitement de données = préparer la requette
+      // 1- Vérification des données reçus du front
+      const post = {};
 
-// Penser à l'image dans le post
-exports.Updatepost = (req, res, next) => {
-  // soit l'utilisateur veut modifier son texte
-  // Soit il veut supprimer la photo
-  // Soit il veut ajouter une photo
-  // Soit il veut changer / modifier la photo qu'il avait mis
+      const verifySchema = await schemaPost.validateAsync(post);
+        if (!verifySchema) {
+          return res
+            .status(400)
+            .json({ message: "Information erronnée, merci de vérifier. " });
+      }
+
+      if (req.file) {
+        post.picture_uploaded = `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`;
+      }
+      // 2- Traitement des données (préparation de requete)
+      const userDB = await db.users.findOne({
+        where: { id: req.user.userId },
+      });
+      if (!userDB) {
+        return res
+          .status(401)
+          .json({ message: "Information erronnée, merci de vérifier. " });
+      }
+      db.posts
+        .findOne({ where: { id: req.params.id } })
+        .then(post => {
+          if (post.id !== req.user.userId) {
+            res.status(200).json({ message : "Vous n'avez pas les droits suffisants pour cette action." })
+          }
+      const fileName = userDB.picture_uploaded.split("/images/")[1];    
+        fs.unlink(`app/images/${fileName}`, (err) => {
+            // Ternaire 
+             err ? console.log(err) : console.log("image supprimée !")
+              }) 
+      // 3- Echange avec la base de données
+
+      db.posts
+        .update({...post})
+    })
+    // 4- Message de retour de l'application ( backend) au front
+    .then(post => {return res.status(201).json({post})})
+    .catch(err => {return res.status(500).json({err: err.message})})
+  } catch(err) {
+    return res.status(500).json({err});
+ } 
 };
 
 exports.getOnePost = (req, res, next) => {
@@ -85,6 +126,10 @@ exports.getAllPosts = (req, res, next) => {
     .findAll()
     .then((post) => res.status(200).json({ post }))
     .catch((error) => res.status(400).json({ error }));
+};
+
+module.exports = {
+
 };
 
 // 1. recherche si dans ta table utilisateur a déjà liké ou disliké ce post
@@ -103,13 +148,31 @@ exports.getAllPosts = (req, res, next) => {
 //      - Il veut disliker
 // On ajoute 1 dislike + créer 1 ligne dans ma table like (INSERT)
 
+
+// 1- Vérification des données reçus du front 
+// 2- Traitement des données
+// 3- Echange avec la base de données
+// 4- Message de retour de l'application ( backend) au front
+
 // exports.likeDislikePost = (req, res, next) => {
-//     if ()  {
+//   // 1- Vérification des données reçus du front (aller chercher quel like peut être liké)
+//   db.likes.findOne({ where: { id: req.params.id }})
+//   .then((like) => {
+//     if (like.id_users.includes(req.body.userId)) {
+//               like.updateOne
+//               // ({id: req.params.id} , {$inc: {likes: -1 } , $pull: {: req.body.userId} })
+//             }
+
+//   })
+// ;
+
+// exports.likeDislikePost = (req, res, next) => {
+//     // aller chercher le post qui veut être liké ou disliké
 //         db.likes.findOne({ _id: req.params.id })
 //         .then(like => {
 //         if (like.id_users.includes(req.body.userId)) {
 //           like.updateOne({_id: req.params.id} , {$inc: {likes: -1 } , $pull: {usersLiked: req.body.userId} })
-//     }
+//         }
 
 // };
 

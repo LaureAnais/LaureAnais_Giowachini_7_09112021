@@ -1,17 +1,41 @@
-// Possibilité de commenter les posts 
-// possibilité de liker? 
-
 const db = require('../models');
 const fs = require('fs');
 
-exports.createComment = (req, res, next) => {
-    db.comments.create({
-        user_id: req.body.user_id,
-        id_posts: req.body.id_posts,
-        comments: req.body.comments
-    })
+const schemaComment = require("../schema/commentSchema");
+
+exports.createComment = async (req, res, next) => {
+    try {
+    // 1- Vérification des données reçus du front
+    const comment = {
+        message: String(req.body.message)
+    } 
+
+    const verifySchema = await schemaComment.validateAsync(comment);
+    if (!verifySchema) {
+      return res
+        .status(400)
+        .json({ message: "Information erronnée, merci de vérifier. " });
+    }
+    // 2- Traitement des données (préparation de requete)
+
+    const userDB = await db.users.findOne({
+        where: { id: req.user.userId },
+      });
+      if (!userDB) {
+        return res
+          .status(401)
+          .json({ message: "Information erronnée, merci de vérifier. " });
+      }
+      comment.user_id = req.user.userId;
+
+    // 3- Echange avec la base de données
+    db.comments.create({comment})
+    // 4- Message de retour de l'application ( backend) au front
     .then(() => res.status(201).json({ message: 'commentaire ajouté!'}))
     .catch(error => res.status(400).json({ error }))  
+} catch (err) {
+    return res.status(500).json({ err });
+  }
 };
 
 // Attention ajouter possibilité pour Admin de supprimer comment
@@ -32,7 +56,48 @@ exports.deleteComment = (req, res, next) => {
 
 
 
-exports.updateComment = (req, res, next) => {};
+exports.updateComment = async (req, res, next) => {
+try  {
+    // 1- Vérification des données reçus du front
+     const comment = { 
+        message: String(req.body.message),
+    };
+
+    const verifySchema = await schemaComment.validateAsync(comment);
+        if (!verifySchema) {
+          return res
+            .status(400)
+            .json({ message: "Information erronnée, merci de vérifier. " });
+      }
+
+    // 2- Traitement des données (préparation de requete)
+    const userDB = await db.users.findOne({
+        where: { id: req.user.userId },
+      });
+      if (!userDB) {
+        return res
+          .status(401)
+          .json({ message: "Information erronnée, merci de vérifier. " });
+      }
+      db.comments
+        .findOne({ where: { id: req.params.id } })
+        .then(comment => {
+          if (comment.id !== req.user.userId) {
+            res.status(200).json({ message : "Vous n'avez pas les droits suffisants pour cette action." })
+          }
+      // 3- Echange avec la base de données
+
+      db.comments
+        .update({...comment})
+          
+})
+    // 4- Message de retour de l'application ( backend) au front
+    .then(comment => {return res.status(201).json({comment})})
+    .catch(err => {return res.status(500).json({err: err.message})})
+} catch(err) {
+    return res.status(500).json({err});
+ } 
+};
 
 exports.getOneComment = (req, res, next) => {
     db.comments.findOne({ where: { id: req.params.id }})
@@ -45,8 +110,3 @@ exports.getAllComments = (req, res, next) => {
     .then(comment => res.status(200).json({comment}))
     .catch(error => res.status(400).json({error}))
 };
-
-
-
-
- // Like & dislike on a post 

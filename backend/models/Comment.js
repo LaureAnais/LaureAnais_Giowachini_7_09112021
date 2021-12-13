@@ -20,7 +20,7 @@ sequelize.define('comments', {
       model: 'posts', key: 'id'
     }
   },
-  comments: {
+  message: {
     type: DataTypes.STRING,
     allowNull: false,
   }
