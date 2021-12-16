@@ -69,11 +69,14 @@ exports.Updatepost = async (req, res, next) => {
       // 1- Vérification des données reçus du front
       const post = {};
 
-      const verifySchema = await schemaPost.validateAsync(post);
+      if (req.body.message) {
+        post.message = req.body.message
+        const verifySchema = await schemaPost.validateAsync(post);
         if (!verifySchema) {
           return res
             .status(400)
             .json({ message: "Information erronnée, merci de vérifier. " });
+      }
       }
 
       if (req.file) {
@@ -107,7 +110,7 @@ exports.Updatepost = async (req, res, next) => {
         .update({...post})
     })
     // 4- Message de retour de l'application ( backend) au front
-    .then(post => {return res.status(201).json({post})})
+    .then(post => {return res.status(201).json(post)})
     .catch(err => {return res.status(500).json({err: err.message})})
   } catch(err) {
     return res.status(500).json({err});
@@ -128,9 +131,7 @@ exports.getAllPosts = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-module.exports = {
-
-};
+// 
 
 // 1. recherche si dans ta table utilisateur a déjà liké ou disliké ce post
 //  - Si OUI
@@ -149,58 +150,8 @@ module.exports = {
 // On ajoute 1 dislike + créer 1 ligne dans ma table like (INSERT)
 
 
+
 // 1- Vérification des données reçus du front 
 // 2- Traitement des données
 // 3- Echange avec la base de données
 // 4- Message de retour de l'application ( backend) au front
-
-// exports.likeDislikePost = (req, res, next) => {
-//   // 1- Vérification des données reçus du front (aller chercher quel like peut être liké)
-//   db.likes.findOne({ where: { id: req.params.id }})
-//   .then((like) => {
-//     if (like.id_users.includes(req.body.userId)) {
-//               like.updateOne
-//               // ({id: req.params.id} , {$inc: {likes: -1 } , $pull: {: req.body.userId} })
-//             }
-
-//   })
-// ;
-
-// exports.likeDislikePost = (req, res, next) => {
-//     // aller chercher le post qui veut être liké ou disliké
-//         db.likes.findOne({ _id: req.params.id })
-//         .then(like => {
-//         if (like.id_users.includes(req.body.userId)) {
-//           like.updateOne({_id: req.params.id} , {$inc: {likes: -1 } , $pull: {usersLiked: req.body.userId} })
-//         }
-
-// };
-
-// if (req.body.like === 1)
-// // Création d'un like (avoir 1 post / 1 utilisateur (userId) / agrémenter le post d'un like)
-//   db.posts.update({_id: req.params.id} , {$inc: {likes: 1 } , $set : {usersLiked: req.body.userId} })
-//   .then(() => res.status(200).json({ message: 'Post likée !'}))
-//   .catch((error) => {res.status(404).json({error});});
-
-//  // Si l'utilisateur ne veut pas liker / Alors il veut dislike
-//  else if (req.body.like === -1)
-//  // Création d'un dislike (on retire 1 like à 1 post)
-//   Post.updateOne({_id: req.params.id} , {$inc: {dislikes: 1 } , $set: {usersDisliked: req.body.userId} })
-//   .then(() => res.status(200).json({ message: 'Un dislike ajouté :( '}))
-//   .catch((error) => {res.status(404).json({error});});
-
-//  else {
-//     db.posts.findOne({ _id: req.params.id })
-//     .then(post => {
-//     if (post.usersLiked.includes(req.body.userId)) {
-//       Post.updateOne({_id: req.params.id} , {$inc: {likes: -1 } , $pull: {usersLiked: req.body.userId} })
-//         .then(() => res.status(200).json({ message: 'Un like enlevé :( '}))
-//         .catch((error) => {res.status(404).json({error});});
-//     }
-//     else {
-//       Post.updateOne({_id: req.params.id} , {$inc: {dislikes: -1 } , $pull: {usersDisliked: req.body.userId} })
-//         .then(() => res.status(200).json({ message: 'Un dislike enlevé :) '}))
-//         .catch((error) => {res.status(404).json({error});});
-//     }
-//   })
-//  }

@@ -20,11 +20,11 @@ sequelize.define('likes', {
       model: 'posts', key: 'id'
     }
   },
-  likes: {
+  postlikes: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  dislikes: {
+  postdislikes: {
     type: DataTypes.INTEGER,
     allowNull: true,
   }

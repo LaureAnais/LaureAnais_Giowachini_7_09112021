@@ -106,6 +106,7 @@ exports.getAllUsers = (req, res, next) => {
 };
 
 exports.updateProfile = async (req, res, next) => { 
+    // Ajouter la vérification de qui demande le changement de profile (cf Token req.user.userId)
     try {
     const user = {}
     if (req.body.pseudo) {
@@ -121,13 +122,29 @@ exports.updateProfile = async (req, res, next) => {
         user.profile_picture =`${req.protocol}://${req.get("host")}/images/${
             req.file.filename}` 
     }
+    const tokenDB = await db.users.findOne({
+        where: {
+            id: req.user.userId
+        }
+    })
+
     const userDB = await db.users.findOne({
         where: {
         id: req.params.id
     }})
-        if (!userDB) {
+
+        if (tokenDB!==userDB) {
             return res.status(403).json({message: "Vous n'avez pas les droits suffisants pour cette action."})
         } 
+    const pseudoDB = await db.users.findOne({
+        where: {
+            pseudo: user.pseudo
+     }})
+    
+        if (pseudoDB) {
+            return res.status(403).json({message : "pseudo déjà utilisé !"})
+        }
+
         // On recupère le nom de l'image dans la base de données / puis on pourra supprimer l'image
         const fileName = userDB.profile_picture.split("/images/")[1];    
         fs.unlink(`app/images/${fileName}`, (err) => {
@@ -137,7 +154,7 @@ exports.updateProfile = async (req, res, next) => {
         // update dans la base de données
         userDB.update({...user})
     
-    .then(user => {return res.status(201).json({user})})
+    .then(user => {return res.status(201).json(user)})
     .catch(err => {return res.status(500).json({err: err.message})})
     
 } catch(err) {
