@@ -96,21 +96,22 @@ exports.Updatepost = async (req, res, next) => {
       }
       db.posts
         .findOne({ where: { id: req.params.id } })
-        .then(post => {
-          if (post.id !== req.user.userId) {
+        .then(postDB => {
+          if (postDB.id !== req.user.userId) {
             res.status(200).json({ message : "Vous n'avez pas les droits suffisants pour cette action." })
           }
-      const fileName = userDB.picture_uploaded.split("/images/")[1];    
-        fs.unlink(`app/images/${fileName}`, (err) => {
-            // Ternaire 
-             err ? console.log(err) : console.log("image supprimée !")
-              }) 
-      // 3- Echange avec la base de données
+          if (postDB.picture_uploaded) {
+            const fileName = postDB.picture_uploaded.split("/images/")[1];    
+            fs.unlink(`app/images/${fileName}`, (err) => {
+                // Ternaire 
+                 err ? console.log(err) : console.log("image supprimée !")
+                  }) 
+          }
 
-      db.posts
-        .update({...post})
+      // 3- Echange avec la base de données
+      return postDB.update({...post})
     })
-    // 4- Message de retour de l'application ( backend) au front
+    // 4- Message de retour de l'application (backend) au front
     .then(post => {return res.status(201).json(post)})
     .catch(err => {return res.status(500).json({err: err.message})})
   } catch(err) {
@@ -132,18 +133,20 @@ exports.getAllPosts = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.likeDislikePosts = async (req, res, next) => {
+exports.likeDislikePost = async (req, res, next) => {
   try {
      // 1- Vérification des données reçues du front
      // likes
+     const likes = {};
+
       if (req.body.postlikes){
-          db.likes.postlikes = 1,
-          db.likes.postdislikes = 0
+          likes.postlikes = 1
+          likes.postdislikes = 0
       } 
       // dislikes
       if (req.body.postdislikes) {
-        db.likes.postdislikes = 1,
-        db.likes.postlikes = 0
+        likes.postdislikes = 1
+        likes.postlikes = 0
       }
       const tokenDB = await db.users.findOne(
         {where:
@@ -153,13 +156,13 @@ exports.likeDislikePosts = async (req, res, next) => {
       if (!tokenDB) {res.status(401).json({ message : "Merci de vous identifier" })
 
       // 2- Traitement des données (préparation de requete)
-      const userlikeDB = db.likes.findOne(
+      const userlikeDB = await db.likes.findOne(
         {where:
-        {id_users: tokenDB.id,
-        id_posts:req.params.id_posts}
+          {id_users: tokenDB.id,
+          id_posts:req.params.id}
         }
       )
-      const postDB = db.posts.findOne(
+      const postDB = await db.posts.findOne(
         {where:
           {id: req.params.id}
         }
@@ -169,19 +172,31 @@ exports.likeDislikePosts = async (req, res, next) => {
     // 3- Echange avec la base de données
       if(userlikeDB.postlikes ||  userlikeDB.postdislikes) {
         userlikeDB.update ({ ...likes})
-        } {
-          res.status(200).json({ message : "Votre choix a été pris en compte" })
-        }
+        .then(() => {
+          res.status(200).json({ message : "Votre choix a été modifié" })
+        })
+        .catch((err) => {
+          res.status(500).json( err )
+        })
+        } 
+        
          
       if(!userlikeDB.postlikes && !userlikeDB.postdislikes) {
         likes.id_users = tokenDB.id,
         likes.id_posts = postDB.id
-        userlikeDB.create ( likes )
-        }
+        db.likes.create(likes)
+        .then(() => {
+          res.status(200).json({ message : "Votre choix a été pris en compte" })
+        })
+        .catch((err) => {
+          res.status(500).json( err )
+        })
+      }
+        
 
     }
   } catch(err) {
-    return res.status(500).json({err});
+    return res.status(500).json(err);
  } 
   
 };

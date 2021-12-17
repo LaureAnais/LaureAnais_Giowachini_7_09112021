@@ -1,24 +1,26 @@
 <template>
-        <nav class = "navbar navbar-expand navbar-light fixed-top">
-        <div class="container">
-            <img alt="Groupomania logo" src="../assets/icon-above-font.png" />
-             <a href="#" class="navbar-brand">Home</a>
-             <div class="collapse navbar-collapse">
-                 <ul class="navbar-nav ml-auto">
-                     <li class="nav-item">
-                         <a href="#" class="nav-link">Se connecter</a>
-                     </li>
-                     <li class="nav-item">
-                         <a href="#" class="nav-link">S'inscrire</a>
-                     </li>
-                 </ul>
-             </div>
+        <v-main>
+      <v-container>
+        <v-tabs>
+          <v-tab @click="LoginForm = true">Se connecter</v-tab>
+          <v-tab @click="SignupForm = true; LoginForm = false">S'inscrire</v-tab>
+        </v-tabs>
+        <div>
+          <Login v-if="LoginForm"/>
+          <Register v-if="SignupForm"/>
         </div>
-    </nav>
+      </v-container>
+    </v-main>
 </template>
 
 <script>
  export default {
-     name: 'Header'
+     name: 'Header', 
+     data() {
+         return {
+            LoginForm: true,
+            SignupForm: false
+         }
+     }
  }
 </script>
