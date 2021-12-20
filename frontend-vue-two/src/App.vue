@@ -2,23 +2,21 @@
 <v-app>
   <div id="nav">
     <Header></Header>
-    <!-- <Registered></Registered> -->
-    <v-main><router-view/></v-main>
-    <!-- <Footer></Footer> -->
+    <Login></Login>
+    <!-- <v-main><router-view/></v-main> -->
     </div>
 </v-app>
 </template>
 
 <script>
-// import Registered from './views/Registered.vue'
 import Header from "../src/components/Header.vue"
-// import Footer from "../src/components/Footer.vue"
+import Login from "../src/components/Auth/LoginForm.vue"
 
 export default {
   name: "App",
   components: {
-    // Registered,
-    Header 
+    Header, 
+    Login 
   },
 
   data:() => {

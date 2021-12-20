@@ -10,9 +10,9 @@ const schemaModifyProfile = require('../schema/modifyProfileSchema');
 exports.signup = async (req, res, next) => {   
     try {
         const user = {
-            email: String(req.body.email),
-            pseudo: String(req.body.pseudo),
-            password: String(req.body.password)
+            email: req.body.email,
+            pseudo: req.body.pseudo,
+            password: req.body.password
         }
         
         const verifySchema = await schemaSignup.validateAsync(user)

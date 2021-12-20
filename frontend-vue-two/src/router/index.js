@@ -4,21 +4,21 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: "Home", 
-    component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
-    meta: {
-    pageTitle: "Page d'accueil",
-    requiresAuth: true
-    }
-  },
+  // {
+  //   path: '/',
+  //   name: "Home", 
+  //   component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
+  //   meta: {
+  //   pageTitle: "Page d'accueil",
+  //   requiresAuth: true
+  //   }
+  // },
   {
     path: '/Registered', 
     name: "Registered",
     component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
     meta: {
-    pageTitle: "Page de connexion",
+    pageTitle: "Page d'inscription'",
     requiresAuth: true
     }
  },
@@ -27,7 +27,7 @@ const routes = [
       name: "Login",
       component: () => import(/* webpackChunkName: "Inscription" */ '../views/Login.vue'),
       meta: {
-      pageTitle: "Page de connexion",
+      pageTitle: "Page d'accueil",
       requiresAuth: true
     } 
   },

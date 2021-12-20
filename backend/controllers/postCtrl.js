@@ -136,24 +136,40 @@ exports.getAllPosts = (req, res, next) => {
 exports.likeDislikePost = async (req, res, next) => {
   try {
      // 1- Vérification des données reçues du front
-     // likes
-     const likes = {};
+  
+     const likes = {
+       // ma clé = une valeur 
+       postlikes : req.body.postlikes, 
+       postdislikes : req.body.postdislikes
+     };
 
-      if (req.body.postlikes){
+      if (!likes.postlikes || !likes.postdislikes) {
+          return res
+            .status(400)
+            .json({ message: "Information erronnée, merci de vérifier. " })
+      };  
+      // Choix neutre
+      if (likes.postlikes === likes.postdislikes){
+        likes.postlikes = 0
+        likes.postdislikes = 0
+      };
+      // likes
+      if (likes.postlikes){
           likes.postlikes = 1
           likes.postdislikes = 0
-      } 
+      }; 
       // dislikes
-      if (req.body.postdislikes) {
+      if (likes.postdislikes) {
         likes.postdislikes = 1
         likes.postlikes = 0
-      }
+      };
+      
       const tokenDB = await db.users.findOne(
         {where:
           {id: req.user.userId}
         }
       ) 
-      if (!tokenDB) {res.status(401).json({ message : "Merci de vous identifier" })
+      if (!tokenDB) {res.status(401).json({ message : "Merci de vous identifier" })}
 
       // 2- Traitement des données (préparation de requete)
       const userlikeDB = await db.likes.findOne(
@@ -167,36 +183,31 @@ exports.likeDislikePost = async (req, res, next) => {
           {id: req.params.id}
         }
       )
-      if(!postDB) {res.status(401).json({ message : "Post non trouvé" })}
+      if(!postDB) {res.status(401).json({ message : "Post non trouvé" })};
+      // console.log(userlikeDB);
       
     // 3- Echange avec la base de données
-      if(userlikeDB.postlikes ||  userlikeDB.postdislikes) {
-        userlikeDB.update ({ ...likes})
-        .then(() => {
-          res.status(200).json({ message : "Votre choix a été modifié" })
-        })
-        .catch((err) => {
-          res.status(500).json( err )
-        })
-        } 
-        
-         
-      if(!userlikeDB.postlikes && !userlikeDB.postdislikes) {
+      if(!userlikeDB) {
         likes.id_users = tokenDB.id,
         likes.id_posts = postDB.id
         db.likes.create(likes)
         .then(() => {
-          res.status(200).json({ message : "Votre choix a été pris en compte" })
+          return res.status(200).json({ message : "Votre choix a été pris en compte" })
         })
         .catch((err) => {
-          res.status(500).json( err )
+          return res.status(500).json(err)
         })
-      }
-        
-
-    }
+      } else {
+          userlikeDB.update ({ ...likes})
+          .then(() => { 
+            return res.status(200).json({ message : "Votre choix a été modifié" })
+          })
+          .catch((err) => {
+            return res.status(500).json(err)
+          })
+        } 
   } catch(err) {
-    return res.status(500).json(err);
+    return res.status(500).json({err: err.message});
  } 
   
 };

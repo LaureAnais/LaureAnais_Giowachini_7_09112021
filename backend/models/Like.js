@@ -23,9 +23,11 @@ sequelize.define('likes', {
   postlikes: {
     type: DataTypes.INTEGER,
     allowNull: true,
+    defaultValue: 0
   },
   postdislikes: {
     type: DataTypes.INTEGER,
     allowNull: true,
+    defaultValue: 0
   }
 });
