@@ -24,7 +24,7 @@ sequelize.define('users', {
     type: DataTypes.STRING,
     allowNull: true,
   }, 
-  id_roles: {
+  roles: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0

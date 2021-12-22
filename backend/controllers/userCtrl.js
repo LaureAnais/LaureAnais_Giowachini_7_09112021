@@ -132,45 +132,61 @@ exports.updateProfile = async (req, res, next) => {
         where: {
         id: req.params.id
     }})
-
-        if (tokenDB!==userDB) {
+    // id du token correspont à l'id du params => id cf table users id
+        console.log(tokenDB.id!==userDB.id || tokenDB.roles != 1)
+        if (tokenDB.id==userDB.id || tokenDB.roles == 1) {
+            const pseudoDB = await db.users.findOne({
+                where: {
+                    pseudo: user.pseudo
+         }})
+        
+            if (pseudoDB) {
+                return res.status(403).json({message : "pseudo déjà utilisé !"})
+            }
+    
+            // On recupère le nom de l'image dans la base de données / puis on pourra supprimer l'image
+            if (userDB.profile_picture) {
+                const fileName = userDB.profile_picture.split("/images/")[1];    
+                fs.unlink(`app/images/${fileName}`, (err) => {
+                // Ternaire 
+                 err ? console.log(err) : console.log("image supprimée !")
+                  })
+            }
+            
+            // update dans la base de données
+            userDB.update({...user})
+        
+        .then(user => {return res.status(201).json(user)})
+        .catch(err => {return res.status(500).json({err: err.message})})
+        
+        } else {
             return res.status(403).json({message: "Vous n'avez pas les droits suffisants pour cette action."})
-        } 
-    const pseudoDB = await db.users.findOne({
-        where: {
-            pseudo: user.pseudo
-     }})
-    
-        if (pseudoDB) {
-            return res.status(403).json({message : "pseudo déjà utilisé !"})
         }
-
-        // On recupère le nom de l'image dans la base de données / puis on pourra supprimer l'image
-        const fileName = userDB.profile_picture.split("/images/")[1];    
-        fs.unlink(`app/images/${fileName}`, (err) => {
-            // Ternaire 
-             err ? console.log(err) : console.log("image supprimée !")
-              })
-        // update dans la base de données
-        userDB.update({...user})
-    
-    .then(user => {return res.status(201).json(user)})
-    .catch(err => {return res.status(500).json({err: err.message})})
-    
+        
 } catch(err) {
     return res.status(500).json({err});
  } 
 };
 
-exports.deleteProfile = (req, res, next) => {
-    db.users.findOne({ where: { id: req.params.id }})
-    .then(user => {
-      if(user.id !== req.user.userId) {
-          // req.user.role = quand je voudrais savoir par rapport à admin ou non
-       return res.status(401).json({error: 'Vous ne pouvez pas réaliser cette opération'});
-      }
-           return user.destroy()
-          })
-          .then(() => res.status(200).json({ message: 'Compte utilisateur supprimé !'}))
-          .catch(error => res.status(500).json({ error }))
-};
+exports.deleteProfile = async (req, res, next) => {
+    try {
+        const tokenDB = await db.users.findOne({
+            where: {
+                id: req.user.userId
+            }
+        })
+        db.users.findOne({ where: { id: req.params.id }})
+        .then(user => {
+          if(user.id == tokenDB.id || tokenDB.roles == 1 ) {
+            return user.destroy()
+            
+            .then(() => res.status(200).json({ message: 'Compte utilisateur supprimé !'}))
+            .catch(error => res.status(500).json({ error }))
+        
+        } else {
+            return res.status(403).json({error: 'Vous ne pouvez pas réaliser cette opération'});
+        }
+    })} catch(err) {
+        return res.status(500).json({err});  
+}};
+

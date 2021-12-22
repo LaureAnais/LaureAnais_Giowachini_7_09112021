@@ -22,7 +22,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 const db = require('./models');
 db.sequelize.sync();
 // Pour la création / modification d'une table
-// db.sequelize.sync({force: true});
+//db.sequelize.sync({force: true});
 
 // Routes files
 const userRoutes = require('./routes/UserRoute');
