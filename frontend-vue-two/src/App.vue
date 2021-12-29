@@ -1,9 +1,10 @@
 <template>
 <v-app>
   <div id="nav">
+    <router-link to="/Registered">Signup</router-link>
     <Header></Header>
     <Login></Login>
-    <!-- <v-main><router-view/></v-main> -->
+  <router-view/>
     </div>
 </v-app>
 </template>
@@ -16,7 +17,7 @@ export default {
   name: "App",
   components: {
     Header, 
-    Login 
+    Login
   },
 
   data:() => {

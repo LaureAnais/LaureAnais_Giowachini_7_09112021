@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Registered from '../components/Auth/SignupForm.vue'
 
 Vue.use(VueRouter);
 
@@ -19,7 +20,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
     meta: {
     pageTitle: "Page d'inscription'",
-    requiresAuth: true
+    // requiresAuth: true
     }
  },
   {
@@ -28,7 +29,7 @@ const routes = [
       component: () => import(/* webpackChunkName: "Inscription" */ '../views/Login.vue'),
       meta: {
       pageTitle: "Page d'accueil",
-      requiresAuth: true
+      // requiresAuth: true
     } 
   },
   // {

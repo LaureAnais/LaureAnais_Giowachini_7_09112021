@@ -13,14 +13,13 @@
                 v-model="valid"
                 @submit.prevent="onSubmitLogin" id="check-login-form">
                   <v-text-field label="Votre email" name="email" prepend-inner-icon="mdi-email" type="email" class="rounded-0" outlined></v-text-field>
-                  <v-text-field label="Votre pseudo" name="email" prepend-inner-icon="mdi-account" type="email" class="rounded-0" outlined></v-text-field>
                   <v-text-field label="Votre mot de passe" name="password" prepend-inner-icon="mdi-lock" type="password"  class="rounded-0" outlined></v-text-field>
                   <v-btn class="rounded-0" color="#000000" x-large block dark>Se connecter</v-btn>
                   <v-card-actions class="text--secondary">
         
                     <v-spacer></v-spacer>
-                    Pas encore inscrit?<a href="#" class="pl-2" style="color: #000000"></a>
-                    <router-link :to="{ name: 'SignupForm' }">S'inscrire'</router-link>
+                    Pas encore inscrit?<a href="#" class="pl-2" style="color: #000000">S'inscrire</a>
+                    <router-link :to="{ name: 'Registered' }">S'inscrire'</router-link>
                   </v-card-actions>
                 </v-form>
               </v-card-text>
@@ -44,10 +43,6 @@ export default {
         email: "",
         emailRules: [
         v => !!v || "Merci de renseigner votre email",
-        ],
-        pseudo: "",
-        nameRules: [
-            v => !!v || 'Merci de renseigner votre pseudo',
         ],
         password: "",
         passwordRules: [
