@@ -1,7 +1,6 @@
 <template>
 <v-app>
   <div id="nav">
-    <router-link to="/Registered">Signup</router-link>
     <Header></Header>
     <Login></Login>
   <router-view/>

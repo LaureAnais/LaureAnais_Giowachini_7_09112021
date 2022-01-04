@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Registered from '../components/Auth/SignupForm.vue'
+// import Registered from '../components/Auth/SignupForm.vue'
 
 Vue.use(VueRouter);
 
@@ -14,15 +14,15 @@ const routes = [
   //   requiresAuth: true
   //   }
   // },
-  {
-    path: '/Registered', 
-    name: "Registered",
-    component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
-    meta: {
-    pageTitle: "Page d'inscription'",
-    // requiresAuth: true
-    }
- },
+//   {
+//     path: '/Registered', 
+//     name: "Registered",
+//     component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
+//     meta: {
+//     pageTitle: "Page d'inscription'",
+//     // requiresAuth: true
+//     }
+//  },
   {
       path: '/login', 
       name: "Login",
