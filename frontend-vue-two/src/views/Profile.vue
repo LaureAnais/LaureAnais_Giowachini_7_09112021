@@ -1,6 +1,5 @@
 <template>
     <div>
-        <NavBar></NavBar>
         <Profile></Profile>
         <h2>
             Information sur votre profil
@@ -13,7 +12,6 @@
 <script>
 
 // import axios from 'axios'
-import NavBar from '../components/Header.vue'
 import Profile from '../components/Home/ProfileGetOne.vue'
 //import ProfilePicture from '../components/Home/ProfilePicture.vue'
 
@@ -24,7 +22,6 @@ export default {
     components: {
         Profile,
         //ProfilePicture,
-        NavBar
     },
 
     data() {

@@ -17,8 +17,9 @@
                   <v-btn class="rounded-0" color="#000000" x-large block dark>S'inscrire</v-btn>
                   <v-card-actions class="text--secondary">
                     <v-spacer></v-spacer>
-                    <router-link :to="{ name: 'Login' }">Se connecter</router-link>
                     Déjà inscrit? <a href="#" class="pl-2" style="color: #000000"></a>
+                    <router-link :to="{ name: 'Login' }">Se connecter</router-link>
+                    
                   </v-card-actions>
                 </v-form>
               </v-card-text>

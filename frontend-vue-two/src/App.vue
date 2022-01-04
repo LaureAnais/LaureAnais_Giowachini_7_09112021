@@ -1,22 +1,19 @@
 <template>
 <v-app>
   <div id="nav">
-    <Header></Header>
-    <Login></Login>
+    <!-- <Header></Header> -->
   <router-view/>
     </div>
 </v-app>
 </template>
 
 <script>
-import Header from "../src/components/Header.vue"
-import Login from "../src/components/Auth/LoginForm.vue"
+// import Header from "../src/components/Header.vue"
 
 export default {
   name: "App",
   components: {
-    Header, 
-    Login
+    // Header
   },
 
   data:() => {

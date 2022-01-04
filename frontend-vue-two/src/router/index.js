@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Registered from '../components/Auth/SignupForm.vue'
 
 Vue.use(VueRouter);
 
@@ -10,28 +9,28 @@ const routes = [
   //   name: "Home", 
   //   component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
   //   meta: {
-  //   pageTitle: "Page d'accueil",
+  //   pageTitle: "L'accueil du blog",
   //   requiresAuth: true
   //   }
   // },
-//   {
-//     path: '/Registered', 
-//     name: "Registered",
-//     component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
-//     meta: {
-//     pageTitle: "Page d'inscription'",
-//     // requiresAuth: true
-//     }
-//  },
   {
-      path: '/login', 
-      name: "Login",
-      component: () => import(/* webpackChunkName: "Inscription" */ '../views/Login.vue'),
-      meta: {
-      pageTitle: "Page d'accueil",
-      // requiresAuth: true
-    } 
-  },
+    path: '/Registered', 
+    name: "Registered",
+    component: () => import(/* webpackChunkName: "Registered" */ '../views/Registered.vue'),
+    meta: {
+    pageTitle: "Page d'inscription'",
+    // requiresAuth: true
+    }
+ },
+  // {
+  //     path: '/login', 
+  //     name: "Login",
+  //     component: () => import(/* webpackChunkName: "Inscription" */ '../views/Login.vue'),
+  //     meta: {
+  //     pageTitle: "Page d'accueil",
+  //     // requiresAuth: true
+  //   } 
+  // },
   // {
   //   path: '/Profile',
   //   name: "Profile",

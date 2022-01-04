@@ -1,18 +1,41 @@
 <template>
-    <SignupForm></SignupForm>
+<div>
+    <v-main>
+      <v-container>
+            <v-tabs>
+            <v-tab @click="LoginFormHeader = true">Se connecter</v-tab>
+            <v-tab @click="LoginFormHeader = false">S'inscrire</v-tab>
+            </v-tabs>
+      </v-container>
+      <v-container>
+        <div v-if="LoginFormHeader">
+            <LoginForm/>
+        </div>
+        <div v-else>
+            <SignupForm/>
+        </div>
+      </v-container>
+    </v-main>
+</div>
+
 </template>
 
 <script>
 import axios from "axios"
 import SignupForm from "../components/Auth/SignupForm.vue"
+import LoginForm from "../components/Auth/LoginForm.vue"
+// import Header from '../components/Header.vue'
 
 export default {
     name:"Registered",
     components: {
-        SignupForm
+        SignupForm,
+        LoginForm,
+        // Header
     },
      data() {
         return { 
+            LoginFormHeader: true,
         //  pseudo: "",
         //  email: "",
         //  password: "",

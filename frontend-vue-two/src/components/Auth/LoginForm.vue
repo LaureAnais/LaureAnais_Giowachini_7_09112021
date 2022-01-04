@@ -18,7 +18,7 @@
                   <v-card-actions class="text--secondary">
         
                     <v-spacer></v-spacer>
-                    Pas encore inscrit?<a href="#" class="pl-2" style="color: #000000"></a>
+                    Pas encore inscrit?
                     <router-link :to="{ name: 'Registered' }">S'inscrire</router-link>
                   </v-card-actions>
                 </v-form>
