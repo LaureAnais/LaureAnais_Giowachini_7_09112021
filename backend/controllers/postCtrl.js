@@ -59,18 +59,19 @@ exports.deletePost = async (req, res, next) => {
       .findOne({ where: { id: req.params.id } })
       .then((post) => {
         if (!post) {
-          res.status(400).json({ message: "Le post n'existe pas" });
+          return res.status(400).json({ message: "Le post n'existe pas" });
         }
         // Vérifier que la personne qui a fait le post est bien le meme que celui qui est enregistré via le TOKEN
         if (post.user_id == tokenDB.id || tokenDB.roles == 1) {
-          return post.destroy();
+          return post.destroy()
+          .then(() => res.status(200).json({ message: "Le post est supprimé !" }))
+          .catch((error) => res.status(500).json({ error }));
         }
         return res
           .status(403)
           .json({ error: "Vous ne pouvez pas réaliser cette opération" });
       })
-      .then(() => res.status(200).json({ message: "Le post est supprimé !" }))
-      .catch((error) => res.status(500).json({ error }));
+      
   } catch (err) {
     return res.status(500).json({ err });
   }

@@ -55,21 +55,22 @@ exports.deleteComment = async (req, res, next) => {
     db.comments
     .findOne({ where: { id: req.params.id } })
     .then((comment) => {
+      if (!comment) {
+        return res.status(400).json({ message: "Le commentaire n'existe pas" });
+      }
       // Vérifier que la personne qui a posté le commentaire est bien le meme que celui qui est enregistré via le TOKEN
       if (comment.id_users == tokenDB.id || tokenDB.roles == 1) {
-        return comment.destroy();
+        return comment.destroy()
+        .then(() =>
+        res.status(200).json({ message: "Le commentaire est supprimé !" })
+      )
+      .catch((error) => res.status(500).json({ error }));
       }
         return res
           .status(403)
           .json({ error: "Vous ne pouvez pas réaliser cette opération" });
       
     })
-    .then(() =>
-      res.status(200).json({ message: "Le commentaire est supprimé !" })
-    )
-
-    .catch((error) => res.status(500).json({ error }));
-
   } catch (err) {
     return res.status(500).json({ err });
   }
