@@ -43,30 +43,37 @@ exports.createComment = async (req, res, next) => {
   }
 };
 
-// Attention ajouter possibilité pour Admin de supprimer comment
-exports.deleteComment = (req, res, next) => {
-  db.comments
+
+exports.deleteComment = async (req, res, next) => {
+  try {
+    const tokenDB = await db.users.findOne({
+      where: { id: req.user.userId },
+    });
+    if (!tokenDB) {
+      return res.status(401).json({ error: "Merci de vous identifier" });
+    }
+    db.comments
     .findOne({ where: { id: req.params.id } })
     .then((comment) => {
       // Vérifier que la personne qui a posté le commentaire est bien le meme que celui qui est enregistré via le TOKEN
-      if (comment.user_id !== req.user.userId) {
-        return res
-          .status(401)
-          .json({ error: "Vous ne pouvez pas réaliser cette opération" });
+      if (comment.id_users == tokenDB.id || tokenDB.roles == 1) {
+        return comment.destroy();
       }
-      return comment.destroy();
+        return res
+          .status(403)
+          .json({ error: "Vous ne pouvez pas réaliser cette opération" });
+      
     })
     .then(() =>
       res.status(200).json({ message: "Le commentaire est supprimé !" })
     )
-    .catch((error) =>
-      res.status(401).json({
-        message:
-          "Vous ne bénéficiez pas des droits permettant la suppression de ce commentaire!",
-      })
-    )
 
     .catch((error) => res.status(500).json({ error }));
+
+  } catch (err) {
+    return res.status(500).json({ err });
+  }
+  
 };
 
 exports.updateComment = async (req, res, next) => {

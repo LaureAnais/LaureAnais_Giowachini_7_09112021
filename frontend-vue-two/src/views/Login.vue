@@ -21,7 +21,6 @@ export default {
         onSubmitLogin: function() {
             const userlogin = {
                 email: this.email,
-                pseudo: this.pseudo,
                 password: this.password
             }
             axios
