@@ -21,6 +21,7 @@
                         <SignupForm/>
                     </div>
                   <v-card-actions class="text--secondary">
+                    {{userlogin}}
                     <v-spacer></v-spacer>
                     <div v-if="CheckLogin" >
                          Pas encore inscrit?
