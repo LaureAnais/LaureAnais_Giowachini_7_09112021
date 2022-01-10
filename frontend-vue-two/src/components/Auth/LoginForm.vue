@@ -31,12 +31,17 @@ export default {
               password: this.password
             }
             axios
-                .post ("http://localhost:3001/api/user/login", userlogin)
+                .post ("http://localhost:3001/api/user/login", userlogin,
+                {
+                    headers: {
+                        "Content-Type": 'application/json'
+                    }
+                })
                 .then(res => {
                     // JSON Stringify nécessaire ou res.data.token ??
                     localStorage.setItem('token', JSON.stringify(res.data))
                     localStorage.setItem('userId', res.data.userId)
-                    this.$router.push()
+                    this.$router.push('/')
                     })
                 .catch(function (error) {
                     console.log(error);

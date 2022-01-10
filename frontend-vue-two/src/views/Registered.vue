@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from "axios"
+
 import SignupForm from "../components/Auth/SignupForm.vue"
 import LoginForm from "../components/Auth/LoginForm.vue"
 // import Header from '../components/Header.vue'
@@ -69,40 +69,7 @@ export default {
         }
     },
     methods: {
-        onSubmitSignup: function() {
-            console.log('onSubmitSignup')
-          const user = {
-                email: this.email,
-                pseudo: this.pseudo,
-                password: this.password
-            }
-            axios
-                .post ("http://localhost:3000/api/users/signup", 
-                JSON.stringify(user), 
-                {
-                    headers: {
-                        "Content-Type": 'application/json'
-                    }
-                }
-                )
-                .then(() => { this.$router.push('/registered')})
-                .catch(() => {this.errorAlert = true})
-        }, 
-         onSubmitLogin: function(user) {
-            this.userlogin = user 
-            console.log(this.userlogin)
-            // axios
-            //     .post ("http://localhost:3000/api/users/login", userlogin)
-            //     .then(res => {
-            //         // JSON Stringify nécessaire ou res.data.token ??
-            //         localStorage.setItem('token', JSON.stringify(res.data))
-            //         localStorage.setItem('userId', res.data.userId)
-            //         this.$router.push()
-            //         })
-            //     .catch(function (error) {
-            //         console.log(error);
-            //     });
-        }
+
     }
 }
 </script>

@@ -7,7 +7,7 @@ module.exports = Joi.object({
                 .required(),
             pseudo: Joi.string()
                 .alphanum()
-                .min(5)
+                .min(3)
                 .max(20)
                 .required(),
             password:Joi.string()

@@ -41,48 +41,56 @@ db.posts.belongsTo(db.users,
 
 // Foreign Key on comments' table link to id_users on users' table
 db.users.hasMany(db.comments, 
-  {as: "fk_users_id"}, 
+  {foreignKey: "id_users",
+    as: "fk_users_comments"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 db.comments.belongsTo(db.users, 
-  {as: "fk_users_id"},
+  {foreignKey: "id_users",
+    as: "fk_users_comments"},
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 
 // Foreign Key on comments' table link to id_posts on posts' table
 db.posts.hasMany(db.comments, 
-  {as: "fk_posts_id"}, 
+  {foreignKey: "id_posts",
+    as: "fk_posts_comments"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 db.comments.belongsTo(db.posts, 
-  {as: "fk_posts_id"},
+  {foreignKey: "id_posts",
+    as: "fk_posts_comments"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 
 // Foreign Key on likes' table link to id_users on users' table 
 db.users.hasMany(db.likes, 
-  {as: "fk_users_like_id"}, 
+  {foreignKey: "id_users",
+   as: "fk_users_like"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 db.likes.belongsTo(db.users, 
-  {as: "fk_users_like_id",
+  {foreignKey: "id_users",
+    as: "fk_users_like",
   onDelete: 'Cascade', 
   onUpdate: 'Cascade'}
 ) 
 
 // Foreign Key on likes' table link to id_posts on posts' table
 db.posts.hasMany(db.likes, 
-  {as: "fk_posts_like_id"}, 
+  {foreignKey: "id_posts",
+    as: "fk_posts_like"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )
 db.likes.belongsTo(db.users, 
-  {as: "fk_posts_like_id"},
+  {foreignKey: "id_posts",
+    as: "fk_posts_like"}, 
   {onDelete: 'Cascade'}, 
   {onUpdate: 'Cascade'}
 )

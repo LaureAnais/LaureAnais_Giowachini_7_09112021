@@ -150,9 +150,26 @@ exports.getOnePost = (req, res, next) => {
 
 exports.getAllPosts = (req, res, next) => {
   db.posts
-    .findAll()
-    .then((post) => res.status(200).json({ post }))
-    .catch((error) => res.status(400).json({ error }));
+    .findAll(
+      {include: [{
+        model: db.users, 
+        as: "fk_users_posts",
+        attributes: ["pseudo"]  
+      },
+     {
+      model: db.comments, 
+      as: "fk_posts_comments",
+      attributes: ["message", "id"], 
+      include: [{
+        model: db.users, 
+        as: "fk_users_comments",
+        attributes: ["pseudo"]
+      }] 
+     }
+    ]}
+    )
+    .then((post) => res.status(200).json( post ))
+    .catch((error) => res.status(500).json({ message : error.message }));
 };
 
 exports.likeDislikePost = async (req, res, next) => {

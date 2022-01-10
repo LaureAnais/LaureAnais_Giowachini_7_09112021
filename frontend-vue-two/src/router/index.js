@@ -4,15 +4,15 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: "Home", 
-  //   component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
-  //   meta: {
-  //   pageTitle: "L'accueil du blog",
-  //   requiresAuth: true
-  //   }
-  // },
+  {
+    path: '/',
+    name: "Home", 
+    component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
+    meta: {
+    pageTitle: "L'accueil du blog",
+    requiresAuth: true
+    }
+  },
   {
     path: '/Registered', 
     name: "Registered",

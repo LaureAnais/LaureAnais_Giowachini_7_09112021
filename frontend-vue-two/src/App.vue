@@ -1,23 +1,25 @@
 <template>
 <v-app>
-  <div id="nav">
-    <!-- <Header></Header> -->
+  <div id="app">
+    <nav></nav>
   <router-view/>
     </div>
 </v-app>
 </template>
 
 <script>
-// import Header from "../src/components/Header.vue"
+
 
 export default {
   name: "App",
   components: {
-    // Header
+
   },
 
   data:() => {
-    
+    return {
+
+    }
   }
 }
 
@@ -47,7 +49,7 @@ export default {
   color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
+/* #nav a.router-link-exact-active {
   color: #42b983;
 } 
 
@@ -57,5 +59,5 @@ export default {
 
 #footer {
   color : blue
-}
+} */
 </style>
