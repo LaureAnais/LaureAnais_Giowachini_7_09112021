@@ -15,7 +15,7 @@
               </a>  
               <v-card-text>
                    <div v-if="CheckLogin">
-                        <LoginForm v-on:onSubmitLogin="onSubmitLogin($event)"></LoginForm>
+                        <LoginForm ></LoginForm>
                    </div>
                     <div v-else>
                         <SignupForm/>

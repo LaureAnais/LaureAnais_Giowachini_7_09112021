@@ -151,7 +151,8 @@ exports.getOnePost = (req, res, next) => {
 exports.getAllPosts = (req, res, next) => {
   db.posts
     .findAll(
-      {include: [{
+      { order: [["createdAt", "DESC"]],
+        include: [{
         model: db.users, 
         as: "fk_users_posts",
         attributes: ["pseudo"]  

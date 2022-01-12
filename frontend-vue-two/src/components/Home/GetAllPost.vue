@@ -14,10 +14,10 @@
       ></v-progress-linear>
     </template>
 
-<!-- image dynamique mettre : avant src et le chemin sera en dynamique + parametrer dans backend -->
-    <v-img
+    <v-img 
+      v-if="post.picture_uploaded"
       height="250"
-      src="src/assets/icon-above-font.png"
+      :src="post.picture_uploaded"
     ></v-img>
 
     <v-card-title>
@@ -67,13 +67,11 @@
       </v-col>      
     </v-card>
     <!-- v-for="comment in post.fk_posts_comments" :key="comment.id" -->
-    <template v-if="post.fk_posts_comments.lenght()>0">
 
-      <template v-for="comment in post.fk_posts_comments">
+      <div v-for="comment in post.fk_posts_comments" :key="comment.id">
         <v-card-subtitle-1>
           <p class="text-left ml-4">
-            Nom personne qui laisse le commentaire 
-            {{comment.message }}
+            {{comment.fk_users_comments.pseudo}}
           </p>    
         </v-card-subtitle-1>
     <v-card-text>
@@ -84,24 +82,13 @@
       </v-row>
         <div>
           <p class="text-left">
-               <!-- {{ fk_posts_comments }} -->
+               {{ comment.message }}
         </p>
       </div>
     </v-card-text>
-    </template>
-
-    </template>
-
-    <v-card-actions>
-      <v-btn
-       color="teal"
-        text
-        @click="commentAdd"
-      >
-        Ajouter un commentaire
-      </v-btn>
-    </v-card-actions>
-
+    </div>
+    <CommentForm :postid="post.id"></CommentForm>
+    
   </v-card>
 </v-container>
   
@@ -109,29 +96,37 @@
 
 <script>
   import axios from 'axios'
+  import CommentForm from '../Comments/CommentForm.vue'
   export default {
+    name: "GetAllPosts" ,
+    components: {
+      CommentForm,
+    }, 
     data: () => ({
       loading: false,
       selection: 1,
-      posts: []
+      posts: [],
+      formRules: [
+                v => !!v || "Merci de compléter le formulaire",
+                ],
     }),
+     computed: {form() { return this.$refs.form }
+    },
 
     methods: {
-      commentAdd () {
-        this.loading = true
-
-        setTimeout(() => (this.loading = false), 2000)
-      },
       showPost() {
         axios
             .get("http://localhost:3001/api/post")
             .then((response) => {
                 this.posts = response.data
+                console.log(this.posts)
 
             })
             .catch(() => {})
         }   
     },
-    mounted() {this.showPost()},
+    mounted() {this.showPost()
+    
+    },
   }
 </script>
