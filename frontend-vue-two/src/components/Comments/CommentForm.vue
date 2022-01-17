@@ -1,10 +1,10 @@
 <template>
     <v-card-actions :id="postid"> 
       <v-form v-model="valid" @submit.prevent="AddCommentToBack(postid)">
-        <v-text-field label="Ecrivez votre commentaire" v-model="commenttoback" type="text" :rules="formRules" class="rounded-0" required>
+        <v-text-field label="Ecrivez votre commentaire"  v-model="commenttoback" type="text" class="rounded-0" required>
 
         </v-text-field>
-        <v-btn color="teal" text type="submit"> Ajouter un commentaire
+        <v-btn color="red darken-2" ml=2 text type="submit"> Valider
         </v-btn>
       </v-form>
       
@@ -21,9 +21,6 @@ export default {
       return {
         valid: true,
         commenttoback: "",
-        formRules: [
-                v => !!v || "Merci de compléter le formulaire",
-                ],
       }
 
     },
@@ -50,7 +47,8 @@ export default {
             }
         
         )
-        .then(() => { location.reload() })
+        // Revoir location.reload pour avoir le même résultat que le post 
+        .then(() => { location.reload()})
         .catch(function (error) {
                     console.log(error);
                 })

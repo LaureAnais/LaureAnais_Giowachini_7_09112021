@@ -1,6 +1,36 @@
 <template>
 <v-container>
 
+<v-card  class="mx-auto my-12" max-width="700" >
+   <v-card-actions > 
+      <v-form v-model="valid" @submit.prevent="AddPostToBack()">
+        <v-text-field label="Créer un post" v-model="newPost" type="text" :rules="formRules" class="rounded-0" required>
+
+        </v-text-field>
+        <!-- <v-btn color="red darken-2" text type="submit"> Valider
+        </v-btn> -->
+      
+        <v-btn color="black" text type="submit"> 
+          <v-icon
+            small
+            class="mr-2 sendPost"
+            @click="editItem(post.id)"
+          >
+            mdi-send
+          </v-icon>
+        </v-btn>
+
+        <v-file-input
+        v-model="postimgtoback" 
+          hide-input
+          truncate-length="15"
+        ></v-file-input>
+
+      </v-form>
+      
+    </v-card-actions>
+</v-card>
+
 <v-card v-for="post in posts" :key="post.id"
     :loading="loading"
     class="mx-auto my-12"
@@ -39,6 +69,27 @@
         </p>
       </div>
     </v-card-text>
+
+    
+    
+    <v-btn color="black" text type="submit"> 
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(post.id)"
+      >
+        mdi-pencil
+      </v-icon>
+    </v-btn>
+
+    <v-btn color="black" text type="submit"> 
+       <v-icon
+        small
+        @click="deleteItem(post.id)"
+      >
+        mdi-delete
+      </v-icon>
+    </v-btn>
 
     <v-divider class="mx-4"></v-divider>
 
@@ -102,14 +153,18 @@
     components: {
       CommentForm,
     }, 
-    data: () => ({
-      loading: false,
-      selection: 1,
-      posts: [],
-      formRules: [
-                v => !!v || "Merci de compléter le formulaire",
-                ],
-    }),
+    data () {
+      return {
+        loading: false,
+        selection: 1,
+        posts: [],
+        newPost: "",
+        formRules: [
+                  v => /^[a-zA-Z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F0-9~!@#$%^&*()`{};':,./<>?| ]*$/.test(v) || "Merci de ne pas mettre de caractères spéciaux", 
+                  ],
+        valid: true,
+      }
+    },
      computed: {form() { return this.$refs.form }
     },
 
@@ -123,10 +178,49 @@
 
             })
             .catch(() => {})
-        }   
+        },
+      AddPostToBack() {
+        const token =  JSON.parse(localStorage.getItem("token"))   
+        const postToBack = {
+            message: this.newPost,
+        }
+
+        axios
+        .post("http://localhost:3001/api/post", postToBack,  
+        {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        "Authorization": `Bearer ${token.token}` 
+                    }
+            }
+        )
+        .then(() => {
+          this.showPost()
+          // Voir pour changer le focus après avoir écrit le post pour éviter de rester en rouge dans le post. L'orienter aileurs sur la page 
+          this.newPost=""
+        })
+        .catch(function (error) {
+                    console.log(error);
+                })
+      }     
     },
     mounted() {this.showPost()
     
     },
   }
 </script>
+
+<style>
+#app {
+background-color: indigo darken-4
+}
+
+button .sendPost {
+  font-size: 30px !important;
+}
+
+.v-form {
+
+}
+
+</style>

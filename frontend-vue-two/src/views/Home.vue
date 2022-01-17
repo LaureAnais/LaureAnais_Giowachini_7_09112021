@@ -1,6 +1,14 @@
 <template>
     <div id="app">
-        <h1>Groupomania Chat</h1>
+         <v-row align="center" justify="center" dense>
+          <v-col cols="12" sm="8" md="4" lg="4">
+            <v-card elevation="0">
+               <a href="" name="Groupomania" title="Groupomania" target="_blank">
+                <v-img src="@/assets/icon-above-font.png" alt="Groupomania" contain height="200"></v-img>
+              </a>  
+            </v-card>
+          </v-col>
+        </v-row>     
         <GetAllPost></GetAllPost>
     </div>
 </template>
