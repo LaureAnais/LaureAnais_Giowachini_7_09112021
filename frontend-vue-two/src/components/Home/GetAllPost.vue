@@ -4,46 +4,51 @@
 <v-card  class="mx-auto my-12" max-width="700" >
    <v-card-actions > 
       <v-form v-model="valid" @submit.prevent="AddPostToBack()">
-        <v-text-field label="Créer un post" v-model="newPost" type="text" :rules="formRules" class="rounded-0" required>
+        <v-row>
+          <v-col cols="1">
+            <v-file-input 
+              v-model="postimgtoback" 
+              hide-input
+              truncate-length="15"
+              >
+          </v-file-input>
+          </v-col>
+          <v-col cols="10">
+            <!-- Changer la couleur bleu et mettre rouge partout -->
+            
+            <v-text-field
+            label="Créer un post"  v-model="newPost" type="text" :rules="formRules" class="rounded-0" required
+         
+              clear-icon="mdi-close-circle"
+              clearable
 
-        </v-text-field>
-        <!-- <v-btn color="red darken-2" text type="submit"> Valider
-        </v-btn> -->
-      
-        <v-btn color="black" text type="submit"> 
+              @click:append-outer-icon="editItem(post.id)"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="1">
+             <v-btn color="black" text type="submit"> 
           <v-icon
-            small
+            medium
             class="mr-2 sendPost"
             @click="editItem(post.id)"
           >
             mdi-send
           </v-icon>
-        </v-btn>
-
-        <v-file-input
-        v-model="postimgtoback" 
-          hide-input
-          truncate-length="15"
-        ></v-file-input>
-
+        </v-btn> 
+          </v-col>
+      </v-row>
+         <!-- :append-outer-icon="'mdi-send'" -->
       </v-form>
       
     </v-card-actions>
 </v-card>
 
-<v-card v-for="post in posts" :key="post.id"
+<v-card 
+v-for="post in posts" :key="post.id"
     :loading="loading"
     class="mx-auto my-12"
     max-width="700"
   >
-    <template slot="progress">
-      <v-progress-linear
-        color="teal"
-        height="10"
-        indeterminate
-      ></v-progress-linear>
-    </template>
-
     <v-img 
       v-if="post.picture_uploaded"
       height="250"
@@ -53,25 +58,8 @@
     <v-card-title>
       <p class="font-weight-light">
       {{post.fk_users_posts.pseudo}}
-      <!-- {{posts}} -->
-    </p></v-card-title>
-
-    <v-card-text>
-      <v-row
-        align="center"
-        class="mx-0"
-      >
-      </v-row>
-        <div>
-          <!-- Mettre texte en 16 -->
-          <p class="text-left">
-               {{ post.message }}
-        </p>
-      </div>
-    </v-card-text>
-
-    
-    
+      
+        
     <v-btn color="black" text type="submit"> 
       <v-icon
         small
@@ -90,6 +78,22 @@
         mdi-delete
       </v-icon>
     </v-btn>
+
+    </p></v-card-title>
+
+    <v-card-text>
+      <v-row
+        align="center"
+        class="mx-0"
+      >
+      </v-row>
+        <div>
+          <!-- Mettre texte en 16 -->
+          <p class="text-left">
+               {{ post.message }}
+        </p>
+      </div>
+    </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
 
@@ -216,11 +220,12 @@ background-color: indigo darken-4
 }
 
 button .sendPost {
-  font-size: 30px !important;
+  /* font-size: 20px !important; */
+  padding-top: 30px !important;
 }
 
-.v-form {
-
-}
+/* .rounded-0{
+  
+} */
 
 </style>
