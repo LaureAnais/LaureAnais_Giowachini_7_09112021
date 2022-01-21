@@ -2,13 +2,12 @@ const db = require("../models");
 const fs = require("fs");
 
 const schemaPost = require("../schema/postSchema");
-const { likes } = require("../models");
 
 exports.createPost = async (req, res, next) => {
   try {
     // 1- Vérification des données reçus du front
     const post = {
-      message: String(req.body.message),
+      message: req.body.message,
     };
 
     const verifySchema = await schemaPost.validateAsync(post);
@@ -152,11 +151,11 @@ exports.getAllPosts = (req, res, next) => {
   db.posts
     .findAll(
       { order: [["createdAt", "DESC"]],
-        include: [{
+        include: [ {
         model: db.users, 
         as: "fk_users_posts",
         attributes: ["pseudo"]  
-      },
+      }, 
      {
       model: db.comments, 
       as: "fk_posts_comments",
@@ -165,8 +164,8 @@ exports.getAllPosts = (req, res, next) => {
         model: db.users, 
         as: "fk_users_comments",
         attributes: ["pseudo"]
-      }] 
-     }
+      } ]} 
+     
     ]}
     )
     .then((post) => res.status(200).json( post ))

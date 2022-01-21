@@ -6,12 +6,12 @@
       <v-form v-model="valid" @submit.prevent="AddPostToBack()">
         <v-row>
           <v-col cols="1">
-            <v-file-input 
-              v-model="postimgtoback" 
+            <!-- <v-file-input 
+             v-model="postimgtoback"  
               hide-input
               truncate-length="15"
               >
-          </v-file-input>
+          </v-file-input> -->
           </v-col>
           <v-col cols="10">
             <!-- Changer la couleur bleu et mettre rouge partout -->
@@ -55,31 +55,50 @@ v-for="post in posts" :key="post.id"
       :src="post.picture_uploaded"
     ></v-img>
 
-    <v-card-title>
-      <p class="font-weight-light">
-      {{post.fk_users_posts.pseudo}}
+    <v-card-title class="mx-auto my-12" justify-space-around>
+      <v-row>
+      <!-- Ajouter row pour englober pseudo et icones modifier et delete
+      spacer  
       
-        
-    <v-btn color="black" text type="submit"> 
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(post.id)"
-      >
-        mdi-pencil
-      </v-icon>
-    </v-btn>
+      Englober les icones dans une div indépendante pour mettre les icones à droite
+      La ou le pseudo reste seul dans sa div pour rester à droite 
+      Donc mettre 4 ou 3 à la div pseduo 
+      Puis 8 à la div icones et ensuite rediviser dedans
 
-    <v-btn color="black" text type="submit"> 
-       <v-icon
-        small
-        @click="deleteItem(post.id)"
-      >
-        mdi-delete
-      </v-icon>
-    </v-btn>
+      -->
+      
+        <v-col cols="4" justify-space-around>
+     
+            {{post.fk_users_posts.pseudo}}
+           
+        </v-col>
+          
+        <v-col cols="4">  
+          <v-btn color="black" text type="submit"> 
+            <v-icon
+              medium
+              class="mr-2"
+              @click="editItem(post.id)"
+            >
+              mdi-pencil
+            </v-icon>
+          </v-btn>
+        </v-col>
 
-    </p></v-card-title>
+
+        <v-col cols="4">  
+          <v-btn color="black" text type="submit"> 
+            <v-icon
+              medium
+              @click="deleteItem(post.id)"
+            >
+              mdi-delete
+            </v-icon>
+          </v-btn>
+        </v-col>
+   
+    </v-row>
+    </v-card-title>
 
     <v-card-text>
       <v-row
@@ -88,7 +107,6 @@ v-for="post in posts" :key="post.id"
       >
       </v-row>
         <div>
-          <!-- Mettre texte en 16 -->
           <p class="text-left">
                {{ post.message }}
         </p>
@@ -121,7 +139,6 @@ v-for="post in posts" :key="post.id"
             </v-btn>
       </v-col>      
     </v-card>
-    <!-- v-for="comment in post.fk_posts_comments" :key="comment.id" -->
 
       <div v-for="comment in post.fk_posts_comments" :key="comment.id">
         <v-card-subtitle-1>
@@ -142,7 +159,8 @@ v-for="post in posts" :key="post.id"
       </div>
     </v-card-text>
     </div>
-    <CommentForm :postid="post.id"></CommentForm>
+    <CommentForm :postid="post.id" ></CommentForm>
+    <!-- :SenttoPost="showPostComment($event)" -->
     
   </v-card>
 </v-container>
@@ -152,10 +170,12 @@ v-for="post in posts" :key="post.id"
 <script>
   import axios from 'axios'
   import CommentForm from '../Comments/CommentForm.vue'
+  // import UpdatePost from '../Home/UpdatePost.vue'
   export default {
     name: "GetAllPosts" ,
     components: {
       CommentForm,
+      // UpdatePost
     }, 
     data () {
       return {
@@ -163,13 +183,16 @@ v-for="post in posts" :key="post.id"
         selection: 1,
         posts: [],
         newPost: "",
+        fromComtoPost: true,
         formRules: [
                   v => /^[a-zA-Z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F0-9~!@#$%^&*()`{};':,./<>?| ]*$/.test(v) || "Merci de ne pas mettre de caractères spéciaux", 
                   ],
         valid: true,
       }
-    },
-     computed: {form() { return this.$refs.form }
+    },  
+    
+     computed: {
+      form() { return this.$refs.form }
     },
 
     methods: {
@@ -178,8 +201,6 @@ v-for="post in posts" :key="post.id"
             .get("http://localhost:3001/api/post")
             .then((response) => {
                 this.posts = response.data
-                console.log(this.posts)
-
             })
             .catch(() => {})
         },
@@ -200,17 +221,43 @@ v-for="post in posts" :key="post.id"
         )
         .then(() => {
           this.showPost()
-          // Voir pour changer le focus après avoir écrit le post pour éviter de rester en rouge dans le post. L'orienter aileurs sur la page 
           this.newPost=""
         })
         .catch(function (error) {
                     console.log(error);
                 })
-      }     
-    },
+      }, 
+      deleteItem (postId) {
+        const token =  JSON.parse(localStorage.getItem("token")) 
+        axios
+            .delete(`http://localhost:3001/api/post/${postId}`, {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        "Authorization": `Bearer ${token.token}` 
+                    } 
+            }
+            
+                    )
+            .then(() => {
+                this.showPost()
+                //reactualiser la page 
+            })
+            .catch(() => {})
+      } 
+    }, 
     mounted() {this.showPost()
     
     },
+    
+      //   showPostComment(fromComtoPost) {
+      //           this.fromComtoPost=fromComtoPost
+      //           if(this.fromComtoPost){
+      //             this.showPost()
+      //           } this.fromComtoPost = true
+      //           console.log(this.fromComtoPost)
+      // }    
+
+
   }
 </script>
 

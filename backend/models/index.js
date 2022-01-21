@@ -25,7 +25,7 @@ db.posts = require ("./Post")(sequelize, Sequelize)
 db.comments = require ("./Comment")(sequelize, Sequelize)
 db.likes = require ("./Like")(sequelize, Sequelize)
 
-// Foreign Key on posts' table link to id_users on user's table
+// // Foreign Key on posts' table link to id_users on user's table
 db.users.hasMany(db.posts, 
   { foreignKey: "user_id", 
     as: "fk_users_posts"}, 
@@ -57,14 +57,19 @@ db.comments.belongsTo(db.users,
 db.posts.hasMany(db.comments, 
   {foreignKey: "id_posts",
     as: "fk_posts_comments"}, 
-  {onDelete: 'Cascade'}, 
-  {onUpdate: 'Cascade'}
+    {onDelete: 'CASCADE'}, 
+   { onUpdate: 'CASCADE'},
+   // foreignKey: { allowNull: false },
+   // hooks: true  
+  
 )
 db.comments.belongsTo(db.posts, 
   {foreignKey: "id_posts",
-    as: "fk_posts_comments"}, 
-  {onDelete: 'Cascade'}, 
-  {onUpdate: 'Cascade'}
+    as: "fk_posts_comments" },
+  {onDelete: 'CASCADE' },
+ { onUpdate: 'CASCADE'},
+  //foreignKey: { allowNull: false },
+  //hooks: true  
 )
 
 // Foreign Key on likes' table link to id_users on users' table 

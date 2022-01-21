@@ -11,17 +11,21 @@
               >
           </v-file-input>
           </v-col>
-          <v-col cols="10">
-            
+
+          <v-col cols="9">
+             <p class="font-weight-light">
+                {{post.fk_users_posts.pseudo}}
+             </p>   
             <v-text-field
-            label="Créer un post"  v-model="newPost" type="text" :rules="formRules" class="rounded-0" required
-         
+            label="Modifier votre post"  v-model="modifyPost" type="text" :rules="formRules" class="rounded-0" required
+              {{ post.message }}
               clear-icon="mdi-close-circle"
               clearable
 
               @click:append-outer-icon="editItem(post.id)"
             ></v-text-field>
           </v-col>
+<!-- Insérer le post ici ?? dans le text field-->
           <v-col cols="1">
              <v-btn color="black" text type="submit"> 
           <v-icon
@@ -33,8 +37,21 @@
           </v-icon>
         </v-btn> 
           </v-col>
+
+          <v-col cols="1">
+             <v-btn color="black" text type="submit"> 
+          <v-icon
+            medium
+            class="mr-2 deletePost"
+            @click="deleteItem(post.id)"
+          >
+           mdi-delete 
+          </v-icon>
+
+        </v-btn> 
+        </v-col>
       </v-row>
-         <!-- :append-outer-icon="'mdi-send'" -->
+
       </v-form>
       
     </v-card-actions>
@@ -54,7 +71,7 @@ export default {
  loading: false,
         selection: 1,
         posts: [],
-        newPost: "",
+        modifyPost: "",
         formRules: [
                   v => /^[a-zA-Z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F0-9~!@#$%^&*()`{};':,./<>?| ]*$/.test(v) || "Merci de ne pas mettre de caractères spéciaux", 
                   ],
@@ -67,7 +84,7 @@ export default {
     methods: {
       showPost() {
         axios
-            .get("http://localhost:3001/api/post")
+            .get("http://localhost:3001/api/post/id")
             .then((response) => {
                 this.posts = response.data
                 console.log(this.posts)
@@ -78,7 +95,7 @@ export default {
       AddPostToBack() {
         const token =  JSON.parse(localStorage.getItem("token"))   
         const postToBack = {
-            message: this.newPost,
+            message: this.modifyPost,
         }
 
         axios
@@ -92,8 +109,7 @@ export default {
         )
         .then(() => {
           this.showPost()
-          // Voir pour changer le focus après avoir écrit le post pour éviter de rester en rouge dans le post. L'orienter aileurs sur la page 
-          this.newPost=""
+          this.modifyPost=""
         })
         .catch(function (error) {
                     console.log(error);
